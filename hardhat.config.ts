@@ -10,64 +10,55 @@ import { resolve } from "path";
 
 import { config as dotenvConfig } from "dotenv";
 import { HardhatUserConfig } from "hardhat/config";
-import { NetworkUserConfig } from "hardhat/types";
 
 dotenvConfig({ path: resolve(__dirname, "./.env") });
 
-const chainIds = {
-  ganache: 1337,
-  goerli: 5,
-  hardhat: 31337,
-  kovan: 42,
-  mainnet: 1,
-  rinkeby: 4,
-  ropsten: 3,
-};
-
-// Ensure that we have all the environment variables we need.
-const mnemonic = process.env.MNEMONIC;
-if (!mnemonic) {
-  throw new Error("Please set your MNEMONIC in a .env file");
-}
-
-const infuraApiKey = process.env.INFURA_API_KEY;
-if (!infuraApiKey) {
-  throw new Error("Please set your INFURA_API_KEY in a .env file");
-}
-
-function createTestnetConfig(network: keyof typeof chainIds): NetworkUserConfig {
-  const url: string = "https://" + network + ".infura.io/v3/" + infuraApiKey;
-  return {
-    accounts: {
-      count: 10,
-      initialIndex: 0,
-      mnemonic,
-      path: "m/44'/60'/0'/0",
-    },
-    chainId: chainIds[network],
-    url,
-  };
+enum chainIds {
+  mainnet = 42220,
+  dev = 1337, // TODO: docker container uses 1337, but I thought it was supposed to be set to 1101 in snapshot?
+  baklava = 62320,
+  hardhat = 31337,
+  testnet = 44787,
 }
 
 const config: HardhatUserConfig = {
-  defaultNetwork: "hardhat",
-  gasReporter: {
-    currency: "USD",
-    enabled: process.env.REPORT_GAS ? true : false,
-    excludeContracts: [],
-    src: "./contracts",
-  },
+  defaultNetwork: "dev",
   networks: {
-    hardhat: {
-      accounts: {
-        mnemonic,
-      },
-      chainId: chainIds.hardhat,
+    mainnet: {
+      url: "https://forno.celo.org",
+      chainId: chainIds.mainnet,
     },
-    goerli: createTestnetConfig("goerli"),
-    kovan: createTestnetConfig("kovan"),
-    rinkeby: createTestnetConfig("rinkeby"),
-    ropsten: createTestnetConfig("ropsten"),
+    testnet: {
+      url: "https://alfajores-forno.celo-testnet.org",
+      chainId: chainIds.testnet,
+      accounts: ["590a1d9cfea40247fd90bb2f5802ea158906bdfc52986f0e1fa9b7f32416b72c"],
+    },
+    dev: {
+      url: "http://localhost:8545",
+      chainId: chainIds.dev,
+    },
+    hardhat: {
+      chainId: chainIds.dev,
+    },
+  },
+  solidity: {
+    compilers: [
+      { version: "0.8.2", settings: {} },
+      {
+        version: "0.5.13",
+        settings: {
+          evmVersion: "istanbul",
+        },
+      },
+      {
+        version: "0.6.11",
+        settings: {},
+      },
+      {
+        version: "0.7.6",
+        settings: {},
+      },
+    ],
   },
   paths: {
     artifacts: "./artifacts",
@@ -75,24 +66,8 @@ const config: HardhatUserConfig = {
     sources: "./contracts",
     tests: "./test",
   },
-  solidity: {
-    version: "0.8.4",
-    settings: {
-      metadata: {
-        // Not including the metadata hash
-        // https://github.com/paulrberg/solidity-template/issues/31
-        bytecodeHash: "none",
-      },
-      // You should disable the optimizer when debugging
-      // https://hardhat.org/hardhat-network/#solidity-optimizer-support
-      optimizer: {
-        enabled: true,
-        runs: 800,
-      },
-    },
-  },
   typechain: {
-    outDir: "typechain",
+    outDir: "types",
     target: "ethers-v5",
   },
 };

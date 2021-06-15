@@ -4,7 +4,7 @@ import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-wit
 import { Contract } from "ethers";
 import { expect } from "chai";
 
-describe("MultiSigContract Tests", function () {
+describe("ERC20 x MultiSig Tests", function () {
   let operatorSigner: SignerWithAddress;
   let clientSigner: SignerWithAddress;
   let receiverAddress: string;
@@ -33,6 +33,7 @@ describe("MultiSigContract Tests", function () {
       [operatorSigner.address, clientSigner.address],
       2,
     ]);
+    expect(multiSigContract.address).to.properAddress;
   });
 
   it("Successfuly sends 100 mu to multiSig", async function () {

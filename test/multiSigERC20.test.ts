@@ -19,7 +19,7 @@ describe("ERC20 x MultiSig Tests", function () {
     receiverAddress = accounts[2].address;
   });
 
-  it("Successfuly deploys Mutuality token contract", async function () {
+  it("Successfully deploys Mutuality token contract", async function () {
     const MutualityTokenFactory = await ethers.getContractFactory("MutualityToken");
 
     muTokenContract = await upgrades.deployProxy(MutualityTokenFactory, [ethers.utils.parseEther("1000000")]);
@@ -28,7 +28,7 @@ describe("ERC20 x MultiSig Tests", function () {
     expect(muTokenContract.address).to.properAddress;
   });
 
-  it("Successfuly deploys a multiSig wallet contract", async function () {
+  it("Successfully deploys a multiSig wallet contract", async function () {
     multiSigContract = await waffle.deployContract(operatorSigner, MultiSigWallet, [
       [operatorSigner.address, clientSigner.address],
       2,
@@ -36,12 +36,12 @@ describe("ERC20 x MultiSig Tests", function () {
     expect(multiSigContract.address).to.properAddress;
   });
 
-  it("Successfuly sends 100 mu to multiSig", async function () {
+  it("Successfully sends 100 mu to multiSig", async function () {
     await (await muTokenContract.transfer(multiSigContract.address, ethers.utils.parseEther("10.0"))).wait();
     expect(await muTokenContract.balanceOf(multiSigContract.address)).to.equal(ethers.utils.parseEther("10.0"));
   });
 
-  it("Successfuly submits 'send 1 mu' transaction by relayer", async function () {
+  it("Successfully submits 'send 1 mu' transaction by relayer", async function () {
     const amount = ethers.utils.parseEther("1.0");
 
     const data = (await muTokenContract.connect(clientSigner).populateTransaction.transfer(receiverAddress, amount))
@@ -68,7 +68,7 @@ describe("ERC20 x MultiSig Tests", function () {
     expect(transactionIndex).to.equal(0);
   });
 
-  it("Successfuly confirms transaction by operator", async function () {
+  it("Successfully confirms transaction by operator", async function () {
     await expect(multiSigContract.confirmTransaction(transactionIndex, operatorSigner.address)).to.emit(
       multiSigContract,
       "Execution",

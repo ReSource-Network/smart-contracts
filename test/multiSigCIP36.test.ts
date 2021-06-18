@@ -21,17 +21,17 @@ describe("CIP36 x MultiSig Tests", () => {
     signerC = accounts[3];
   });
 
-  it("Successfuly deploys CIP36 contract", async () => {
+  it("Successfully deploys CIP36 contract", async () => {
     CIP36Contract = await waffle.deployContract(deployer, CIP36Artifact);
     expect(CIP36Contract.address).to.properAddress;
   });
 
-  it("Successfuly deploys a multiSig wallet contract", async () => {
+  it("Successfully deploys a multiSig wallet contract", async () => {
     multiSigWallet = await waffle.deployContract(deployer, MultiSigWallet, [[deployer.address, signerA.address], 2]);
     expect(multiSigWallet.address).to.properAddress;
   });
 
-  it("Successfuly assigns multiSigWallet a credit limit of 1000", async () => {
+  it("Successfully assigns multiSigWallet a credit limit of 1000", async () => {
     await expect(CIP36Contract.setCreditLimit(multiSigWallet.address, ethers.utils.parseEther("1000.0"))).to.emit(
       CIP36Contract,
       "CreditLimitUpdate",
@@ -42,7 +42,7 @@ describe("CIP36 x MultiSig Tests", () => {
     );
   });
 
-  it("MultiSigWallet Successfuly sends wallet B 900 rUSD", async () => {
+  it("MultiSigWallet Successfully sends wallet B 900 rUSD", async () => {
     const amount = ethers.utils.parseEther("900.0");
 
     const data = (await CIP36Contract.connect(signerA).populateTransaction.transfer(signerB.address, amount)).data;
@@ -90,7 +90,7 @@ describe("CIP36 x MultiSig Tests", () => {
       .reverted;
   });
 
-  it("Wallet B Successfuly sends wallet C 200 rUSD", async () => {
+  it("Wallet B Successfully sends wallet C 200 rUSD", async () => {
     await expect(CIP36Contract.connect(signerB).transfer(signerC.address, ethers.utils.parseEther("200.0"))).to.emit(
       CIP36Contract,
       "Transfer",

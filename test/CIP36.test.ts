@@ -20,19 +20,19 @@ describe("CIP36 Tests", function () {
     signerC = accounts[3];
   });
 
-  it("Successfuly deploys CIP36 contract", async function () {
+  it("Successfully deploys CIP36 contract", async function () {
     CIP36Contract = await waffle.deployContract(deployer, CIP36Artifact);
     expect(CIP36Contract.address).to.properAddress;
   });
 
-  it("Successfuly assigns wallet A a credit limit of 1000", async function () {
+  it("Successfully assigns wallet A a credit limit of 1000", async function () {
     await expect(CIP36Contract.setCreditLimit(signerA.address, ethers.utils.parseEther("1000.0"))).to.emit(
       CIP36Contract,
       "CreditLimitUpdate",
     );
   });
 
-  it("Wallet A Successfuly sends wallet B 900 rUSD", async function () {
+  it("Wallet A Successfully sends wallet B 900 rUSD", async function () {
     await expect(CIP36Contract.connect(signerA).transfer(signerB.address, ethers.utils.parseEther("900.0"))).to.emit(
       CIP36Contract,
       "Transfer",
@@ -44,7 +44,7 @@ describe("CIP36 Tests", function () {
       .reverted;
   });
 
-  it("Wallet B Successfuly sends wallet C 200 rUSD", async function () {
+  it("Wallet B Successfully sends wallet C 200 rUSD", async function () {
     await expect(CIP36Contract.connect(signerB).transfer(signerC.address, ethers.utils.parseEther("200.0"))).to.emit(
       CIP36Contract,
       "Transfer",

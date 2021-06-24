@@ -24,7 +24,6 @@ interface MultiSigWalletInterface extends ethers.utils.Interface {
     "MAX_OWNER_COUNT()": FunctionFragment;
     "addOwner(address)": FunctionFragment;
     "changeRequirement(uint256)": FunctionFragment;
-    "confirmTransaction(uint256,address)": FunctionFragment;
     "confirmTransactionByRelay(uint256,bytes,address)": FunctionFragment;
     "confirmations(uint256,address)": FunctionFragment;
     "executeTransactionByRelay(uint256,bytes,address)": FunctionFragment;
@@ -53,7 +52,6 @@ interface MultiSigWalletInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "MAX_OWNER_COUNT", values?: undefined): string;
   encodeFunctionData(functionFragment: "addOwner", values: [string]): string;
   encodeFunctionData(functionFragment: "changeRequirement", values: [BigNumberish]): string;
-  encodeFunctionData(functionFragment: "confirmTransaction", values: [BigNumberish, string]): string;
   encodeFunctionData(functionFragment: "confirmTransactionByRelay", values: [BigNumberish, BytesLike, string]): string;
   encodeFunctionData(functionFragment: "confirmations", values: [BigNumberish, string]): string;
   encodeFunctionData(functionFragment: "executeTransactionByRelay", values: [BigNumberish, BytesLike, string]): string;
@@ -90,7 +88,6 @@ interface MultiSigWalletInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "MAX_OWNER_COUNT", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "addOwner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "changeRequirement", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "confirmTransaction", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "confirmTransactionByRelay", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "confirmations", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "executeTransactionByRelay", data: BytesLike): Result;
@@ -188,12 +185,6 @@ export class MultiSigWallet extends BaseContract {
 
     changeRequirement(
       _required: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> },
-    ): Promise<ContractTransaction>;
-
-    confirmTransaction(
-      transactionId: BigNumberish,
-      signer: string,
       overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
@@ -326,12 +317,6 @@ export class MultiSigWallet extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  confirmTransaction(
-    transactionId: BigNumberish,
-    signer: string,
-    overrides?: Overrides & { from?: string | Promise<string> },
-  ): Promise<ContractTransaction>;
-
   confirmTransactionByRelay(
     transactionId: BigNumberish,
     sig: BytesLike,
@@ -444,8 +429,6 @@ export class MultiSigWallet extends BaseContract {
     addOwner(owner: string, overrides?: CallOverrides): Promise<void>;
 
     changeRequirement(_required: BigNumberish, overrides?: CallOverrides): Promise<void>;
-
-    confirmTransaction(transactionId: BigNumberish, signer: string, overrides?: CallOverrides): Promise<void>;
 
     confirmTransactionByRelay(
       transactionId: BigNumberish,
@@ -589,12 +572,6 @@ export class MultiSigWallet extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    confirmTransaction(
-      transactionId: BigNumberish,
-      signer: string,
-      overrides?: Overrides & { from?: string | Promise<string> },
-    ): Promise<BigNumber>;
-
     confirmTransactionByRelay(
       transactionId: BigNumberish,
       sig: BytesLike,
@@ -699,12 +676,6 @@ export class MultiSigWallet extends BaseContract {
 
     changeRequirement(
       _required: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> },
-    ): Promise<PopulatedTransaction>;
-
-    confirmTransaction(
-      transactionId: BigNumberish,
-      signer: string,
       overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 

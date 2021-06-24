@@ -39,8 +39,15 @@ describe("CIP36 Tests", function () {
     );
   });
 
-  it("Wallet A fails to sends wallet B an additioanl 101 rUSD", async function () {
-    await expect(CIP36Contract.connect(signerA).transfer(signerB.address, ethers.utils.parseEther("101.0"))).to.be
+  it("Wallet A Successfully sends wallet C 50 rUSD", async function () {
+    await expect(CIP36Contract.connect(signerA).transfer(signerC.address, ethers.utils.parseEther("50.0"))).to.emit(
+      CIP36Contract,
+      "Transfer",
+    );
+  });
+
+  it("Wallet A fails to sends wallet B an additioanl 51 rUSD", async function () {
+    await expect(CIP36Contract.connect(signerA).transfer(signerB.address, ethers.utils.parseEther("51.0"))).to.be
       .reverted;
   });
 

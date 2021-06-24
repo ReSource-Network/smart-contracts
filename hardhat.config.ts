@@ -23,7 +23,7 @@ enum chainIds {
 }
 
 const config: HardhatUserConfig = {
-  defaultNetwork: "testnet",
+  defaultNetwork: "dev",
   networks: {
     mainnet: {
       url: "https://forno.celo.org",

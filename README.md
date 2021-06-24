@@ -1,6 +1,4 @@
-# Solidity Template
-
-My favourite setup for writing Solidity smart contracts.
+# ReSource Contracts
 
 - [Hardhat](https://github.com/nomiclabs/hardhat): compile and run the smart contracts on a local development network
 - [TypeChain](https://github.com/ethereum-ts/TypeChain): generate TypeScript types for smart contracts
@@ -9,9 +7,6 @@ My favourite setup for writing Solidity smart contracts.
 - [Solhint](https://github.com/protofire/solhint): linter
 - [Solcover](https://github.com/sc-forks/solidity-coverage): code coverage
 - [Prettier Plugin Solidity](https://github.com/prettier-solidity/prettier-plugin-solidity): code formatter
-
-This is a GitHub template, which means you can reuse it as many times as you want. You can do that by clicking the "Use this
-template" button at the top of the page.
 
 ## Usage
 
@@ -29,6 +24,12 @@ Compile the smart contracts with Hardhat:
 
 ```sh
 $ yarn compile
+```
+
+### Ganache Startup
+
+```sh
+$ docker compose up
 ```
 
 ### TypeChain
@@ -113,5 +114,3 @@ compiler version is to add the following fields to your VSCode user settings:
   "solidity.defaultCompiler": "remote"
 }
 ```
-
-Where of course `v0.8.4+commit.c7e474f2` can be replaced with any other version.

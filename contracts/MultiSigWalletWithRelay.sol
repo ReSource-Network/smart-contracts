@@ -307,7 +307,7 @@ contract MultiSigWallet {
     /// @dev Allows an owner to confirm a transaction.
     /// @param transactionId Transaction ID.
     function confirmTransaction(uint256 transactionId, address signer)
-        public
+        internal
         ownerExists(signer)
         transactionExists(transactionId)
         notConfirmed(transactionId, signer)

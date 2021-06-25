@@ -26,35 +26,32 @@ describe("CIP36 Tests", function () {
   });
 
   it("Successfully assigns wallet A a credit limit of 1000", async function () {
-    await expect(CIP36Contract.setCreditLimit(signerA.address, ethers.utils.parseEther("1000.0"))).to.emit(
+    await expect(CIP36Contract.setCreditLimit(signerA.address, ethers.utils.parseUnits("1000.0", "mwei"))).to.emit(
       CIP36Contract,
       "CreditLimitUpdate",
     );
   });
 
   it("Wallet A Successfully sends wallet B 900 rUSD", async function () {
-    await expect(CIP36Contract.connect(signerA).transfer(signerB.address, ethers.utils.parseEther("900.0"))).to.emit(
-      CIP36Contract,
-      "Transfer",
-    );
+    await expect(
+      CIP36Contract.connect(signerA).transfer(signerB.address, ethers.utils.parseUnits("900.0", "mwei")),
+    ).to.emit(CIP36Contract, "Transfer");
   });
 
   it("Wallet A Successfully sends wallet C 50 rUSD", async function () {
-    await expect(CIP36Contract.connect(signerA).transfer(signerC.address, ethers.utils.parseEther("50.0"))).to.emit(
-      CIP36Contract,
-      "Transfer",
-    );
+    await expect(
+      CIP36Contract.connect(signerA).transfer(signerC.address, ethers.utils.parseUnits("50.0", "mwei")),
+    ).to.emit(CIP36Contract, "Transfer");
   });
 
   it("Wallet A fails to sends wallet B an additioanl 51 rUSD", async function () {
-    await expect(CIP36Contract.connect(signerA).transfer(signerB.address, ethers.utils.parseEther("51.0"))).to.be
-      .reverted;
+    await expect(CIP36Contract.connect(signerA).transfer(signerB.address, ethers.utils.parseUnits("51.0", "mwei"))).to
+      .be.reverted;
   });
 
   it("Wallet B Successfully sends wallet C 200 rUSD", async function () {
-    await expect(CIP36Contract.connect(signerB).transfer(signerC.address, ethers.utils.parseEther("200.0"))).to.emit(
-      CIP36Contract,
-      "Transfer",
-    );
+    await expect(
+      CIP36Contract.connect(signerB).transfer(signerC.address, ethers.utils.parseUnits("200.0", "mwei")),
+    ).to.emit(CIP36Contract, "Transfer");
   });
 });

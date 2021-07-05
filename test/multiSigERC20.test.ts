@@ -3,9 +3,11 @@ import * as MultiSigWallet from "../artifacts/contracts/MultiSigWalletWithRelay.
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
 import { Contract } from "ethers";
 import { expect } from "chai";
+import chai from "chai";
+import { solidity } from "ethereum-waffle";
+chai.use(solidity);
 
 describe("ERC20 x MultiSig Tests", function () {
-  let operator: SignerWithAddress; // pays for transactions and deployments
   let coSigner: SignerWithAddress; // co-signs transactions
   let multiSigOwner: SignerWithAddress; // user who own's the multiSig
   let signerB: SignerWithAddress;
@@ -15,7 +17,6 @@ describe("ERC20 x MultiSig Tests", function () {
 
   before(async function () {
     const accounts = await ethers.getSigners();
-    operator = accounts[0];
     coSigner = accounts[1];
     multiSigOwner = accounts[2];
     signerB = accounts[3];

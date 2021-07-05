@@ -1,9 +1,12 @@
-import { waffle, ethers, upgrades } from "hardhat";
+import { waffle, ethers } from "hardhat";
 import * as MultiSigWallet from "../artifacts/contracts/MultiSigWalletWithRelay.sol/MultiSigWallet.json";
 import * as CIP36Artifact from "../artifacts/contracts/CIP36.sol/CIP36.json";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
 import { Contract } from "ethers";
 import { expect } from "chai";
+import chai from "chai";
+import { solidity } from "ethereum-waffle";
+chai.use(solidity);
 
 describe("CIP36 x MultiSig Tests", () => {
   let operator: SignerWithAddress; // pays for transactions and deployments

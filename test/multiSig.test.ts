@@ -3,6 +3,9 @@ import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-wit
 import { expect } from "chai";
 import { MultiSigWallet } from "../types/MultiSigWallet";
 import * as MultiSigJson from "../artifacts/contracts/MultiSigWalletWithRelay.sol/MultiSigWallet.json";
+import chai from "chai";
+import { solidity } from "ethereum-waffle";
+chai.use(solidity);
 
 describe("MultiSig Tests", function () {
   let coSigner: SignerWithAddress;

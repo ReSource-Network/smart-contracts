@@ -32,7 +32,7 @@ const config: HardhatUserConfig = {
     testnet: {
       url: "https://alfajores-forno.celo-testnet.org",
       chainId: chainIds.testnet,
-      accounts: ["590a1d9cfea40247fd90bb2f5802ea158906bdfc52986f0e1fa9b7f32416b72c"],
+      accounts: [process.env.DEPLOYER_PK || ""],
     },
     dev: {
       url: "http://localhost:8545",

@@ -28,15 +28,6 @@ contract RUSD is CIP36 {
     uint256 restrictionRenwal;
     uint256 expirationSeconds;
 
-    /*
-     *  Constants
-     */
-
-    /*
-     *  Events
-     */
-    // event CreditLimitUpdate(address member, uint256 limit);
-
     constructor(
         address[] memory _networkMembers,
         address[] memory _networkOperators,

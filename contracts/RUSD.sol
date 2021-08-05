@@ -18,14 +18,14 @@ contract RUSD is CIP36 {
      *  Events
      */
     event RestrictionUpdated(Restriction indexed state);
-    event RestrictionExpirationUpdated(uint256 restrictionRenwal);
+    event RestrictionExpirationUpdated(uint256 restrictionRenewal);
 
     /*
      *  Storage
      */
     NetworkRegistry public registry;
     Restriction public restrictionState;
-    uint256 restrictionRenwal;
+    uint256 restrictionRenewal;
     uint256 expirationSeconds;
 
     constructor(
@@ -35,7 +35,7 @@ contract RUSD is CIP36 {
     ) CIP36("rUSD", "rUSD") {
         registry = new NetworkRegistry(_networkMembers, _networkOperators);
         restrictionState = Restriction.REGISTERED;
-        restrictionRenwal = block.timestamp;
+        restrictionRenewal = block.timestamp;
         expirationSeconds = _expiration;
     }
 
@@ -90,7 +90,7 @@ contract RUSD is CIP36 {
         if (restrictionState == Restriction.NONE) {
             revert("Already non restrictive");
         }
-        if ((block.timestamp - restrictionRenwal) / 1 seconds < expirationSeconds) {
+        if ((block.timestamp - restrictionRenewal) / 1 seconds < expirationSeconds) {
             revert("Restriction state not expired...");
         }
         emit RestrictionUpdated(Restriction.NONE);
@@ -99,6 +99,6 @@ contract RUSD is CIP36 {
 
     function updateRestrictionExpiration() external onlyOwner() {
         emit RestrictionExpirationUpdated(block.timestamp);
-        restrictionRenwal = block.timestamp;
+        restrictionRenewal = block.timestamp;
     }
 }

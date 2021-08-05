@@ -26,7 +26,7 @@ contract CIP36 is Ownable, ERC20Burnable {
 
     event CreditLimitUpdate(address member, uint256 limit);
 
-    constructor() ERC20("rUSD", "rUSD") {}
+    constructor(string memory name_, string memory symbol_) ERC20(name_, symbol_) {}
 
     function decimals() public view virtual override returns (uint8) {
         return 6;
@@ -57,7 +57,7 @@ contract CIP36 is Ownable, ERC20Burnable {
         address _from,
         address _to,
         uint256 _amount
-    ) internal override {
+    ) internal virtual override {
         _beforeTransfer(_from, _amount);
         super._transfer(_from, _to, _amount);
         _afterTransfer(_to, _amount);

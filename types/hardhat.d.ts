@@ -60,6 +60,10 @@ declare module "hardhat/types/runtime" {
       name: "NetworkRegistry",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.NetworkRegistry__factory>;
+    getContractFactory(
+      name: "RUSD",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.RUSD__factory>;
 
     // default types
     getContractFactory(

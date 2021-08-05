@@ -19,7 +19,7 @@ import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
 
-interface CIP36Interface extends ethers.utils.Interface {
+interface RUSDInterface extends ethers.utils.Interface {
   functions: {
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
@@ -34,13 +34,19 @@ interface CIP36Interface extends ethers.utils.Interface {
     "increaseAllowance(address,uint256)": FunctionFragment;
     "name()": FunctionFragment;
     "owner()": FunctionFragment;
+    "registry()": FunctionFragment;
+    "removeRestrictions()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
+    "restrictPositiveBalance()": FunctionFragment;
+    "restrictRegistered()": FunctionFragment;
+    "restrictionState()": FunctionFragment;
     "setCreditLimit(address,uint256)": FunctionFragment;
     "symbol()": FunctionFragment;
     "totalSupply()": FunctionFragment;
     "transfer(address,uint256)": FunctionFragment;
     "transferFrom(address,address,uint256)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
+    "updateRestrictionExpiration()": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -80,8 +86,25 @@ interface CIP36Interface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+  encodeFunctionData(functionFragment: "registry", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "removeRestrictions",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "restrictPositiveBalance",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "restrictRegistered",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "restrictionState",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -104,6 +127,10 @@ interface CIP36Interface extends ethers.utils.Interface {
   encodeFunctionData(
     functionFragment: "transferOwnership",
     values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "updateRestrictionExpiration",
+    values?: undefined
   ): string;
 
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
@@ -134,8 +161,25 @@ interface CIP36Interface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "registry", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "removeRestrictions",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "renounceOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "restrictPositiveBalance",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "restrictRegistered",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "restrictionState",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -156,21 +200,31 @@ interface CIP36Interface extends ethers.utils.Interface {
     functionFragment: "transferOwnership",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "updateRestrictionExpiration",
+    data: BytesLike
+  ): Result;
 
   events: {
     "Approval(address,address,uint256)": EventFragment;
     "CreditLimitUpdate(address,uint256)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
+    "RestrictionExpirationUpdated(uint256)": EventFragment;
+    "RestrictionUpdated(uint8)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "CreditLimitUpdate"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
+  getEvent(
+    nameOrSignatureOrTopic: "RestrictionExpirationUpdated"
+  ): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "RestrictionUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
 }
 
-export class CIP36 extends BaseContract {
+export class RUSD extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -211,7 +265,7 @@ export class CIP36 extends BaseContract {
     toBlock?: string | number | undefined
   ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
 
-  interface: CIP36Interface;
+  interface: RUSDInterface;
 
   functions: {
     allowance(
@@ -272,9 +326,25 @@ export class CIP36 extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<[string]>;
 
+    registry(overrides?: CallOverrides): Promise<[string]>;
+
+    removeRestrictions(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     renounceOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    restrictPositiveBalance(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    restrictRegistered(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    restrictionState(overrides?: CallOverrides): Promise<[number]>;
 
     setCreditLimit(
       _member: string,
@@ -301,6 +371,10 @@ export class CIP36 extends BaseContract {
 
     transferOwnership(
       newOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    updateRestrictionExpiration(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
@@ -360,9 +434,25 @@ export class CIP36 extends BaseContract {
 
   owner(overrides?: CallOverrides): Promise<string>;
 
+  registry(overrides?: CallOverrides): Promise<string>;
+
+  removeRestrictions(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   renounceOwnership(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
+
+  restrictPositiveBalance(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  restrictRegistered(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  restrictionState(overrides?: CallOverrides): Promise<number>;
 
   setCreditLimit(
     _member: string,
@@ -389,6 +479,10 @@ export class CIP36 extends BaseContract {
 
   transferOwnership(
     newOwner: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  updateRestrictionExpiration(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -448,7 +542,17 @@ export class CIP36 extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<string>;
 
+    registry(overrides?: CallOverrides): Promise<string>;
+
+    removeRestrictions(overrides?: CallOverrides): Promise<void>;
+
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
+
+    restrictPositiveBalance(overrides?: CallOverrides): Promise<void>;
+
+    restrictRegistered(overrides?: CallOverrides): Promise<void>;
+
+    restrictionState(overrides?: CallOverrides): Promise<number>;
 
     setCreditLimit(
       _member: string,
@@ -477,6 +581,8 @@ export class CIP36 extends BaseContract {
       newOwner: string,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    updateRestrictionExpiration(overrides?: CallOverrides): Promise<void>;
   };
 
   filters: {
@@ -504,6 +610,14 @@ export class CIP36 extends BaseContract {
       [string, string],
       { previousOwner: string; newOwner: string }
     >;
+
+    RestrictionExpirationUpdated(
+      restrictionRenwal?: null
+    ): TypedEventFilter<[BigNumber], { restrictionRenwal: BigNumber }>;
+
+    RestrictionUpdated(
+      state?: BigNumberish | null
+    ): TypedEventFilter<[number], { state: number }>;
 
     Transfer(
       from?: string | null,
@@ -574,9 +688,25 @@ export class CIP36 extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
+    registry(overrides?: CallOverrides): Promise<BigNumber>;
+
+    removeRestrictions(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     renounceOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    restrictPositiveBalance(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    restrictRegistered(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    restrictionState(overrides?: CallOverrides): Promise<BigNumber>;
 
     setCreditLimit(
       _member: string,
@@ -603,6 +733,10 @@ export class CIP36 extends BaseContract {
 
     transferOwnership(
       newOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    updateRestrictionExpiration(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
@@ -669,9 +803,25 @@ export class CIP36 extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    registry(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    removeRestrictions(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     renounceOwnership(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
+
+    restrictPositiveBalance(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    restrictRegistered(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    restrictionState(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     setCreditLimit(
       _member: string,
@@ -698,6 +848,10 @@ export class CIP36 extends BaseContract {
 
     transferOwnership(
       newOwner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    updateRestrictionExpiration(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };

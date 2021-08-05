@@ -13,6 +13,7 @@ export type { CIP36 } from "./CIP36";
 export type { MultiSigWallet } from "./MultiSigWallet";
 export type { MutualityToken } from "./MutualityToken";
 export type { NetworkRegistry } from "./NetworkRegistry";
+export type { RUSD } from "./RUSD";
 
 export { ERC20Upgradeable__factory } from "./factories/ERC20Upgradeable__factory";
 export { IERC20MetadataUpgradeable__factory } from "./factories/IERC20MetadataUpgradeable__factory";
@@ -26,3 +27,4 @@ export { CIP36__factory } from "./factories/CIP36__factory";
 export { MultiSigWallet__factory } from "./factories/MultiSigWallet__factory";
 export { MutualityToken__factory } from "./factories/MutualityToken__factory";
 export { NetworkRegistry__factory } from "./factories/NetworkRegistry__factory";
+export { RUSD__factory } from "./factories/RUSD__factory";

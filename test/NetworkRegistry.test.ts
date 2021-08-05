@@ -5,7 +5,7 @@ import * as NetworkRegistryJson from "../artifacts/contracts/NetworkRegistry.sol
 import chai from "chai";
 import { solidity } from "ethereum-waffle";
 import { NetworkRegistry } from "../types/NetworkRegistry";
-import { NetworkRegistry__factory } from "../types/factories/NetworkRegistry__factory";
+
 chai.use(solidity);
 
 describe("Network Registry Tests", function () {
@@ -41,6 +41,9 @@ describe("Network Registry Tests", function () {
     expect(members).to.contain(memberA.address);
     expect(members).to.contain(memberB.address);
     expect(operators).to.contain(operatorA.address);
+    await expect(await networkRegistry.isMember(memberA.address)).to.be.true;
+    await expect(await networkRegistry.isMember(memberB.address)).to.be.true;
+    await expect(await networkRegistry.isOperator(operatorA.address)).to.be.true;
   });
 
   it("Unsuccessfully add memberC by deployer", async () => {
@@ -53,9 +56,9 @@ describe("Network Registry Tests", function () {
       "MemberAddition",
     );
     const members = await networkRegistry.getMembers();
-    expect(members).to.include(memberA.address);
-    expect(members).to.include(memberB.address);
     expect(members).to.include(memberC.address);
+    await expect(await networkRegistry.isMember(memberC.address)).to.be.true;
+    await expect(await networkRegistry.isMember(memberD.address)).to.be.false;
   });
 
   it("Unsuccessfully add operatorB by deployer", async () => {
@@ -67,10 +70,9 @@ describe("Network Registry Tests", function () {
       networkRegistry,
       "OperatorAddition",
     );
-    const members = await networkRegistry.getMembers();
-    expect(members).to.include(memberA.address);
-    expect(members).to.include(memberB.address);
-    expect(members).to.include(memberC.address);
+    const operators = await networkRegistry.getOperators();
+    expect(operators).to.contain(operatorB.address);
+    await expect(await networkRegistry.isOperator(operatorB.address)).to.be.true;
   });
 
   it("Successfully add memberD by operatorB", async () => {
@@ -79,9 +81,7 @@ describe("Network Registry Tests", function () {
       "MemberAddition",
     );
     const members = await networkRegistry.getMembers();
-    expect(members).to.include(memberA.address);
-    expect(members).to.include(memberB.address);
-    expect(members).to.include(memberC.address);
     expect(members).to.include(memberD.address);
+    await expect(await networkRegistry.isMember(memberD.address)).to.be.true;
   });
 });

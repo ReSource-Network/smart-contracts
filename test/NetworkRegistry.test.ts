@@ -1,7 +1,6 @@
-import { waffle, ethers } from "hardhat";
+import { upgrades, ethers } from "hardhat";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
 import { expect } from "chai";
-import * as NetworkRegistryJson from "../artifacts/contracts/NetworkRegistry.sol/NetworkRegistry.json";
 import chai from "chai";
 import { solidity } from "ethereum-waffle";
 import { NetworkRegistry } from "../types/NetworkRegistry";
@@ -16,6 +15,7 @@ describe("Network Registry Tests", function () {
   let memberD: SignerWithAddress;
   let operatorA: SignerWithAddress;
   let operatorB: SignerWithAddress;
+  let random: SignerWithAddress;
   let networkRegistry: NetworkRegistry;
 
   before(async function () {
@@ -27,10 +27,13 @@ describe("Network Registry Tests", function () {
     memberD = accounts[4];
     operatorA = accounts[5];
     operatorB = accounts[6];
+    random = accounts[7];
   });
 
   it("Successfully deploys a NetworkRegistry", async function () {
-    networkRegistry = (await waffle.deployContract(deployer, NetworkRegistryJson, [
+    const networkRegistryFactory = await ethers.getContractFactory("NetworkRegistry");
+
+    networkRegistry = (await upgrades.deployProxy(networkRegistryFactory, [
       [memberA.address, memberB.address],
       [operatorA.address],
     ])) as NetworkRegistry;
@@ -46,8 +49,8 @@ describe("Network Registry Tests", function () {
     await expect(await networkRegistry.isOperator(operatorA.address)).to.be.true;
   });
 
-  it("Unsuccessfully add memberC by deployer", async () => {
-    await expect(networkRegistry.connect(deployer).addMember(memberC.address)).to.be.reverted;
+  it("Unsuccessfully add memberC by random wallet", async () => {
+    await expect(networkRegistry.connect(random).addMember(memberC.address)).to.be.reverted;
   });
 
   it("Successfully add memberC by operatorA", async () => {
@@ -61,8 +64,8 @@ describe("Network Registry Tests", function () {
     await expect(await networkRegistry.isMember(memberD.address)).to.be.false;
   });
 
-  it("Unsuccessfully add operatorB by deployer", async () => {
-    await expect(networkRegistry.connect(deployer).addOperator(operatorB.address)).to.be.reverted;
+  it("Unsuccessfully add operatorB by random wallet", async () => {
+    await expect(networkRegistry.connect(random).addOperator(operatorB.address)).to.be.reverted;
   });
 
   it("Successfully add operatorB by operatorA", async () => {
@@ -75,7 +78,31 @@ describe("Network Registry Tests", function () {
     await expect(await networkRegistry.isOperator(operatorB.address)).to.be.true;
   });
 
-  it("Successfully add memberD by operatorB", async () => {
+  it("Unsuccessfully remove owner by operatorA", async () => {
+    await expect(networkRegistry.connect(operatorA).removeOperator(deployer.address)).to.be.reverted;
+    const operators = await networkRegistry.getOperators();
+    expect(operators).to.contain(operatorA.address);
+    expect(operators).to.contain(deployer.address);
+    await expect(await networkRegistry.isOperator(operatorA.address)).to.be.true;
+    await expect(await networkRegistry.isOperator(deployer.address)).to.be.true;
+  });
+
+  it("Successfully remove operatorB by owner", async () => {
+    await expect(await networkRegistry.removeOperator(operatorB.address)).to.emit(networkRegistry, "OperatorRemoval");
+    const operators = await networkRegistry.getOperators();
+    expect(operators).to.contain(operatorA.address);
+    expect(operators).to.contain(deployer.address);
+    await expect(await networkRegistry.isOperator(operatorA.address)).to.be.true;
+    await expect(await networkRegistry.isOperator(operatorB.address)).to.be.false;
+    await expect(await networkRegistry.isOperator(deployer.address)).to.be.true;
+  });
+
+  it("Unsuccessfully add memberD by operatorB", async () => {
+    await expect(networkRegistry.connect(operatorB).addMember(memberD.address)).to.be.reverted;
+    await expect(await networkRegistry.isMember(memberD.address)).to.be.false;
+  });
+
+  it("Successfully add memberD by operatorA", async () => {
     await expect(await networkRegistry.connect(operatorA).addMember(memberD.address)).to.emit(
       networkRegistry,
       "MemberAddition",
@@ -84,4 +111,6 @@ describe("Network Registry Tests", function () {
     expect(members).to.include(memberD.address);
     await expect(await networkRegistry.isMember(memberD.address)).to.be.true;
   });
+
+  // TODO: add test for ownable
 });

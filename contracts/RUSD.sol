@@ -3,8 +3,9 @@ pragma solidity ^0.8.0;
 
 import "./CIP36.sol";
 import "./NetworkRegistry.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
-contract RUSD is CIP36 {
+contract RUSD is Initializable, CIP36 {
     using SafeMath for *;
 
     /*
@@ -28,12 +29,9 @@ contract RUSD is CIP36 {
     uint256 restrictionRenewal;
     uint256 expirationSeconds;
 
-    constructor(
-        address[] memory _networkMembers,
-        address[] memory _networkOperators,
-        uint256 _expiration
-    ) CIP36("rUSD", "rUSD") {
-        registry = new NetworkRegistry(_networkMembers, _networkOperators);
+    function initializeRUSD(address registryAddress, uint256 _expiration) public virtual initializer {
+        CIP36.initialize("rUSD", "rUSD");
+        registry = NetworkRegistry(registryAddress);
         restrictionState = Restriction.REGISTERED;
         restrictionRenewal = block.timestamp;
         expirationSeconds = _expiration;

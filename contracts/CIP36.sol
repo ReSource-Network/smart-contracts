@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
-import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20BurnableUpgradeable.sol";
 
 library ExtraMath {
     function toUInt128(uint256 _a) internal pure returns (uint128) {
@@ -13,7 +13,7 @@ library ExtraMath {
     }
 }
 
-contract CIP36 is Ownable, ERC20Burnable {
+contract CIP36 is OwnableUpgradeable, ERC20BurnableUpgradeable {
     using SafeMath for *;
     using ExtraMath for *;
 
@@ -26,7 +26,10 @@ contract CIP36 is Ownable, ERC20Burnable {
 
     event CreditLimitUpdate(address member, uint256 limit);
 
-    constructor(string memory name_, string memory symbol_) ERC20(name_, symbol_) {}
+    function initialize(string memory name_, string memory symbol_) public virtual initializer {
+        __ERC20_init(name_, symbol_);
+        __Ownable_init();
+    }
 
     function decimals() public view virtual override returns (uint8) {
         return 6;

@@ -13,9 +13,17 @@ import * as Contracts from ".";
 declare module "hardhat/types/runtime" {
   interface HardhatEthersHelpers extends HardhatEthersHelpersBase {
     getContractFactory(
+      name: "OwnableUpgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.OwnableUpgradeable__factory>;
+    getContractFactory(
       name: "ERC20Upgradeable",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ERC20Upgradeable__factory>;
+    getContractFactory(
+      name: "ERC20BurnableUpgradeable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC20BurnableUpgradeable__factory>;
     getContractFactory(
       name: "IERC20MetadataUpgradeable",
       signerOrOptions?: ethers.Signer | FactoryOptions

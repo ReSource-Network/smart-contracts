@@ -1,10 +1,10 @@
-import { waffle, ethers } from "hardhat";
+import { waffle, ethers, upgrades } from "hardhat";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
 import { expect } from "chai";
-import * as RUSDJson from "../artifacts/contracts/RUSD.sol/RUSD.json";
 import chai from "chai";
 import { solidity } from "ethereum-waffle";
 import { RUSD } from "../types/RUSD";
+import { NetworkRegistry } from "../types/NetworkRegistry";
 chai.use(solidity);
 
 const sleep = (milliseconds: number) => {
@@ -24,6 +24,7 @@ describe("RUSD Tests", function () {
   let nonMemberC: SignerWithAddress;
   let operatorA: SignerWithAddress;
   let rUSD: RUSD;
+  let networkRegistry: NetworkRegistry;
 
   before(async function () {
     const accounts = await ethers.getSigners();
@@ -37,11 +38,20 @@ describe("RUSD Tests", function () {
   });
 
   it("Successfully deploys a RUSD contract", async function () {
-    rUSD = (await waffle.deployContract(deployer, RUSDJson, [
+    const networkRegistryFactory = await ethers.getContractFactory("NetworkRegistry");
+
+    networkRegistry = (await upgrades.deployProxy(networkRegistryFactory, [
       [memberA.address, memberB.address],
       [operatorA.address],
-      5,
-    ])) as RUSD;
+    ])) as NetworkRegistry;
+
+    const rUSDFactory = await ethers.getContractFactory("RUSD");
+
+    // console.log(networkRegistry.address);
+
+    rUSD = (await upgrades.deployProxy(rUSDFactory, [networkRegistry.address, 7], {
+      initializer: "initializeRUSD",
+    })) as RUSD;
 
     const registryAddress = await rUSD.registry();
     const restrictionState = await rUSD.restrictionState();
@@ -101,7 +111,7 @@ describe("RUSD Tests", function () {
       .reverted;
   });
 
-  it("Unsuccessfully update RUSD to NONE restriction state by owner", async function () {
+  it("Unsuccessfully update RUSD to NONE restriction state", async function () {
     await expect(rUSD.connect(memberA).removeRestrictions()).to.be.reverted;
     await expect(rUSD.removeRestrictions()).to.be.reverted;
     const state = await rUSD.restrictionState();
@@ -116,7 +126,7 @@ describe("RUSD Tests", function () {
   });
 
   it("Updates RUSD to NONE restriction state by nonOwner", async function () {
-    sleep(7000);
+    sleep(8000);
     await expect(rUSD.connect(memberA).removeRestrictions()).to.emit(rUSD, "RestrictionUpdated");
     const state = await rUSD.restrictionState();
     expect(state).to.equal(2);

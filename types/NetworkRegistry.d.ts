@@ -26,12 +26,16 @@ interface NetworkRegistryInterface extends ethers.utils.Interface {
     "free()": FunctionFragment;
     "getMembers()": FunctionFragment;
     "getOperators()": FunctionFragment;
+    "initialize(address[],address[])": FunctionFragment;
     "isMember(address)": FunctionFragment;
     "isOperator(address)": FunctionFragment;
     "members(uint256)": FunctionFragment;
     "operators(uint256)": FunctionFragment;
+    "owner()": FunctionFragment;
     "removeMember(address)": FunctionFragment;
     "removeOperator(address)": FunctionFragment;
+    "renounceOwnership()": FunctionFragment;
+    "transferOwnership(address)": FunctionFragment;
   };
 
   encodeFunctionData(functionFragment: "addMember", values: [string]): string;
@@ -45,6 +49,10 @@ interface NetworkRegistryInterface extends ethers.utils.Interface {
     functionFragment: "getOperators",
     values?: undefined
   ): string;
+  encodeFunctionData(
+    functionFragment: "initialize",
+    values: [string[], string[]]
+  ): string;
   encodeFunctionData(functionFragment: "isMember", values: [string]): string;
   encodeFunctionData(functionFragment: "isOperator", values: [string]): string;
   encodeFunctionData(
@@ -55,12 +63,21 @@ interface NetworkRegistryInterface extends ethers.utils.Interface {
     functionFragment: "operators",
     values: [BigNumberish]
   ): string;
+  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "removeMember",
     values: [string]
   ): string;
   encodeFunctionData(
     functionFragment: "removeOperator",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "renounceOwnership",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "transferOwnership",
     values: [string]
   ): string;
 
@@ -75,10 +92,12 @@ interface NetworkRegistryInterface extends ethers.utils.Interface {
     functionFragment: "getOperators",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "isMember", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "isOperator", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "members", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "operators", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "removeMember",
     data: BytesLike
@@ -87,18 +106,28 @@ interface NetworkRegistryInterface extends ethers.utils.Interface {
     functionFragment: "removeOperator",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "renounceOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "transferOwnership",
+    data: BytesLike
+  ): Result;
 
   events: {
     "MemberAddition(address)": EventFragment;
     "MemberRemoval(address)": EventFragment;
     "OperatorAddition(address)": EventFragment;
     "OperatorRemoval(address)": EventFragment;
+    "OwnershipTransferred(address,address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "MemberAddition"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "MemberRemoval"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OperatorAddition"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OperatorRemoval"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
 }
 
 export class NetworkRegistry extends BaseContract {
@@ -161,6 +190,12 @@ export class NetworkRegistry extends BaseContract {
 
     getOperators(overrides?: CallOverrides): Promise<[string[]]>;
 
+    initialize(
+      _members: string[],
+      _operators: string[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     isMember(arg0: string, overrides?: CallOverrides): Promise<[boolean]>;
 
     isOperator(arg0: string, overrides?: CallOverrides): Promise<[boolean]>;
@@ -169,6 +204,8 @@ export class NetworkRegistry extends BaseContract {
 
     operators(arg0: BigNumberish, overrides?: CallOverrides): Promise<[string]>;
 
+    owner(overrides?: CallOverrides): Promise<[string]>;
+
     removeMember(
       member: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -176,6 +213,15 @@ export class NetworkRegistry extends BaseContract {
 
     removeOperator(
       operator: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    renounceOwnership(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    transferOwnership(
+      newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
@@ -196,6 +242,12 @@ export class NetworkRegistry extends BaseContract {
 
   getOperators(overrides?: CallOverrides): Promise<string[]>;
 
+  initialize(
+    _members: string[],
+    _operators: string[],
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   isMember(arg0: string, overrides?: CallOverrides): Promise<boolean>;
 
   isOperator(arg0: string, overrides?: CallOverrides): Promise<boolean>;
@@ -204,6 +256,8 @@ export class NetworkRegistry extends BaseContract {
 
   operators(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
+  owner(overrides?: CallOverrides): Promise<string>;
+
   removeMember(
     member: string,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -211,6 +265,15 @@ export class NetworkRegistry extends BaseContract {
 
   removeOperator(
     operator: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  renounceOwnership(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  transferOwnership(
+    newOwner: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -225,6 +288,12 @@ export class NetworkRegistry extends BaseContract {
 
     getOperators(overrides?: CallOverrides): Promise<string[]>;
 
+    initialize(
+      _members: string[],
+      _operators: string[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     isMember(arg0: string, overrides?: CallOverrides): Promise<boolean>;
 
     isOperator(arg0: string, overrides?: CallOverrides): Promise<boolean>;
@@ -233,9 +302,18 @@ export class NetworkRegistry extends BaseContract {
 
     operators(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
+    owner(overrides?: CallOverrides): Promise<string>;
+
     removeMember(member: string, overrides?: CallOverrides): Promise<void>;
 
     removeOperator(operator: string, overrides?: CallOverrides): Promise<void>;
+
+    renounceOwnership(overrides?: CallOverrides): Promise<void>;
+
+    transferOwnership(
+      newOwner: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {
@@ -254,6 +332,14 @@ export class NetworkRegistry extends BaseContract {
     OperatorRemoval(
       operator?: string | null
     ): TypedEventFilter<[string], { operator: string }>;
+
+    OwnershipTransferred(
+      previousOwner?: string | null,
+      newOwner?: string | null
+    ): TypedEventFilter<
+      [string, string],
+      { previousOwner: string; newOwner: string }
+    >;
   };
 
   estimateGas: {
@@ -273,6 +359,12 @@ export class NetworkRegistry extends BaseContract {
 
     getOperators(overrides?: CallOverrides): Promise<BigNumber>;
 
+    initialize(
+      _members: string[],
+      _operators: string[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     isMember(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     isOperator(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
@@ -284,6 +376,8 @@ export class NetworkRegistry extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    owner(overrides?: CallOverrides): Promise<BigNumber>;
+
     removeMember(
       member: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -291,6 +385,15 @@ export class NetworkRegistry extends BaseContract {
 
     removeOperator(
       operator: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    renounceOwnership(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    transferOwnership(
+      newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
@@ -312,6 +415,12 @@ export class NetworkRegistry extends BaseContract {
 
     getOperators(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    initialize(
+      _members: string[],
+      _operators: string[],
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     isMember(
       arg0: string,
       overrides?: CallOverrides
@@ -332,6 +441,8 @@ export class NetworkRegistry extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     removeMember(
       member: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -339,6 +450,15 @@ export class NetworkRegistry extends BaseContract {
 
     removeOperator(
       operator: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    renounceOwnership(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    transferOwnership(
+      newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };

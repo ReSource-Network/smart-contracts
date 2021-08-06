@@ -1,9 +1,12 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+
 /// @title NetworkRegistry - Allows Network Members to be added and removed by Network Operators.
 /// @author Bridger Zoske - <bridger@resourcenetwork.co>
-contract NetworkRegistry {
+contract NetworkRegistry is OwnableUpgradeable {
     /*
      *  Events
      */
@@ -26,42 +29,43 @@ contract NetworkRegistry {
      *  Modifiers
      */
     modifier onlyOperator(address operator) {
-        require(isOperator[operator]);
+        require(isOperator[operator], "address is not operator");
         _;
     }
 
     modifier memberDoesNotExist(address member) {
-        require(!isMember[member]);
+        require(!isMember[member], "member already exists");
         _;
     }
 
     modifier memberExists(address member) {
-        require(isMember[member]);
+        require(isMember[member], "member does not exist");
         _;
     }
 
     modifier operatorDoesNotExist(address operator) {
-        require(!isOperator[operator]);
+        require(!isOperator[operator], "operator already exists");
         _;
     }
 
     modifier operatorExists(address operator) {
-        require(isOperator[operator]);
+        require(isOperator[operator], "operator does not exist");
         _;
     }
 
     modifier notNull(address _address) {
-        require(_address != address(0));
+        require(_address != address(0), "invalid operator address");
         _;
     }
 
     /*
      * Public functions
      */
-    /// @dev Contract constructor sets initial members and initial operators.
+    /// @dev Contract initialzer sets initial members and initial operators.
     /// @param _members List of initial members.
     /// @param _operators List of initial operators.
-    constructor(address[] memory _members, address[] memory _operators) {
+    function initialize(address[] memory _members, address[] memory _operators) public virtual initializer {
+        __Ownable_init();
         for (uint256 i = 0; i < _members.length; i++) {
             require(!isMember[_members[i]] && _members[i] != address(0));
             isMember[_members[i]] = true;
@@ -72,6 +76,8 @@ contract NetworkRegistry {
         }
         members = _members;
         operators = _operators;
+        operators.push(owner());
+        isOperator[owner()] = true;
     }
 
     /// @dev Allows to add a new member. Transaction has to be sent by an operator wallet.
@@ -111,6 +117,7 @@ contract NetworkRegistry {
     /// @dev Allows to remove a operator. Transaction has to be sent by operator.
     /// @param operator Address of operator.
     function removeOperator(address operator) public onlyOperator(msg.sender) operatorExists(operator) {
+        require(operator != owner(), "can't remove owner operator");
         isOperator[operator] = false;
         for (uint256 i = 0; i < operators.length - 1; i++)
             if (operators[i] == operator) {

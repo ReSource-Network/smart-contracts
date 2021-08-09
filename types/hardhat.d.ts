@@ -61,6 +61,14 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.MultiSigWallet__factory>;
     getContractFactory(
+      name: "MuStaker",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.MuStaker__factory>;
+    getContractFactory(
+      name: "Staker",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Staker__factory>;
+    getContractFactory(
       name: "MutualityToken",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.MutualityToken__factory>;

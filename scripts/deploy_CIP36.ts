@@ -1,13 +1,9 @@
-import { config, ethers } from "hardhat";
-import { CeloProvider } from "@celo-tools/celo-ethers-wrapper";
+import { ethers } from "hardhat";
 import { CIP36__factory } from "../types";
-import { HttpNetworkConfig } from "hardhat/types";
 import { CIP36 } from "../types/CIP36";
 
 async function main(): Promise<void> {
-  const connectionInfo = config.networks.testnet as HttpNetworkConfig;
-  const provider = new CeloProvider(connectionInfo.url);
-  await provider.ready;
+  // todo: fix
   console.log((await ethers.getSigners())[0]);
   const factory = new CIP36__factory((await ethers.getSigners())[0]);
 

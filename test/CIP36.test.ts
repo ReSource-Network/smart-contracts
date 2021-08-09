@@ -1,14 +1,13 @@
-import { waffle, ethers } from "hardhat";
-import * as CIP36Artifact from "../artifacts/contracts/CIP36.sol/CIP36.json";
+import { ethers, upgrades } from "hardhat";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
 import { Contract } from "ethers";
 import { expect } from "chai";
 import chai from "chai";
 import { solidity } from "ethereum-waffle";
+import { CIP36 } from "../types/CIP36";
 chai.use(solidity);
 
 describe("CIP36 Tests", function () {
-  let deployer: SignerWithAddress;
   let signerA: SignerWithAddress;
   let signerB: SignerWithAddress;
   let signerC: SignerWithAddress;
@@ -17,14 +16,14 @@ describe("CIP36 Tests", function () {
 
   before(async function () {
     const accounts = await ethers.getSigners();
-    deployer = accounts[0];
     signerA = accounts[1];
     signerB = accounts[2];
     signerC = accounts[3];
   });
 
   it("Successfully deploys CIP36 contract", async function () {
-    CIP36Contract = await waffle.deployContract(deployer, CIP36Artifact);
+    const CIP36Factory = await ethers.getContractFactory("CIP36");
+    CIP36Contract = (await upgrades.deployProxy(CIP36Factory, ["RUSD", "RUSD"])) as CIP36;
     expect(CIP36Contract.address).to.properAddress;
   });
 

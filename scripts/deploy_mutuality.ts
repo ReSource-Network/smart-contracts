@@ -1,17 +1,13 @@
-import { ethers, config, upgrades } from "hardhat";
-import { CeloProvider } from "@celo-tools/celo-ethers-wrapper";
-import { MutualityToken__factory } from "../types";
-import { HttpNetworkConfig } from "hardhat/types";
+import { ethers, upgrades } from "hardhat";
+import { MutualityToken } from "../types/MutualityToken";
 
 async function main(): Promise<void> {
-  const connectionInfo = config.networks.dev as HttpNetworkConfig;
-  const provider = new CeloProvider(connectionInfo.url);
-  await provider.ready;
-
   const MutualityToken = await ethers.getContractFactory("MutualityToken");
-
-  const mutualityToken = await upgrades.deployProxy(MutualityToken, [ethers.utils.parseUnits("10000000", "ether")]);
+  const mutualityToken = (await upgrades.deployProxy(MutualityToken, [
+    ethers.utils.parseEther("10000000"),
+  ])) as MutualityToken;
   await mutualityToken.deployed();
+
   console.log("mutuality deployed to:", mutualityToken.address);
 }
 

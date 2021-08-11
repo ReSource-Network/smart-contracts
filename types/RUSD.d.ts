@@ -33,7 +33,8 @@ interface RUSDInterface extends ethers.utils.Interface {
     "decreaseAllowance(address,uint256)": FunctionFragment;
     "increaseAllowance(address,uint256)": FunctionFragment;
     "initialize(string,string)": FunctionFragment;
-    "initializeRUSD(address,uint256)": FunctionFragment;
+    "initializeRUSD(address,address,uint256)": FunctionFragment;
+    "manager()": FunctionFragment;
     "name()": FunctionFragment;
     "owner()": FunctionFragment;
     "registry()": FunctionFragment;
@@ -92,8 +93,9 @@ interface RUSDInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "initializeRUSD",
-    values: [string, BigNumberish]
+    values: [string, string, BigNumberish]
   ): string;
+  encodeFunctionData(functionFragment: "manager", values?: undefined): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(functionFragment: "registry", values?: undefined): string;
@@ -174,6 +176,7 @@ interface RUSDInterface extends ethers.utils.Interface {
     functionFragment: "initializeRUSD",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "manager", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "registry", data: BytesLike): Result;
@@ -345,9 +348,12 @@ export class RUSD extends BaseContract {
 
     initializeRUSD(
       registryAddress: string,
+      underwriteAddress: string,
       _expiration: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    manager(overrides?: CallOverrides): Promise<[string]>;
 
     name(overrides?: CallOverrides): Promise<[string]>;
 
@@ -465,9 +471,12 @@ export class RUSD extends BaseContract {
 
   initializeRUSD(
     registryAddress: string,
+    underwriteAddress: string,
     _expiration: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
+
+  manager(overrides?: CallOverrides): Promise<string>;
 
   name(overrides?: CallOverrides): Promise<string>;
 
@@ -585,9 +594,12 @@ export class RUSD extends BaseContract {
 
     initializeRUSD(
       registryAddress: string,
+      underwriteAddress: string,
       _expiration: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    manager(overrides?: CallOverrides): Promise<string>;
 
     name(overrides?: CallOverrides): Promise<string>;
 
@@ -743,9 +755,12 @@ export class RUSD extends BaseContract {
 
     initializeRUSD(
       registryAddress: string,
+      underwriteAddress: string,
       _expiration: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    manager(overrides?: CallOverrides): Promise<BigNumber>;
 
     name(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -870,9 +885,12 @@ export class RUSD extends BaseContract {
 
     initializeRUSD(
       registryAddress: string,
+      underwriteAddress: string,
       _expiration: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
+
+    manager(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

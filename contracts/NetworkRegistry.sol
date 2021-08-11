@@ -22,8 +22,6 @@ contract NetworkRegistry is OwnableUpgradeable {
     address[] public operators;
     address[] public members;
 
-    bool public free;
-
     /*
      *  Modifiers
      */

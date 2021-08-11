@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./CIP36.sol";
+import "./CIP36/CIP36.sol";
 import "./NetworkRegistry.sol";
+import "./Mutuality/UnderwriteManager.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
 contract RUSD is Initializable, CIP36 {
@@ -25,13 +26,20 @@ contract RUSD is Initializable, CIP36 {
      *  Storage
      */
     NetworkRegistry public registry;
+    UnderwriteManager public manager;
+
     Restriction public restrictionState;
     uint256 restrictionRenewal;
     uint256 expirationSeconds;
 
-    function initializeRUSD(address registryAddress, uint256 _expiration) public virtual initializer {
+    function initializeRUSD(
+        address registryAddress,
+        address underwriteAddress,
+        uint256 _expiration
+    ) public virtual initializer {
         CIP36.initialize("rUSD", "rUSD");
         registry = NetworkRegistry(registryAddress);
+        manager = UnderwriteManager(underwriteAddress);
         restrictionState = Restriction.REGISTERED;
         restrictionRenewal = block.timestamp;
         expirationSeconds = _expiration;
@@ -47,6 +55,7 @@ contract RUSD is Initializable, CIP36 {
     ) internal override {
         _verifyNetworkRegistry(_from, _to, _amount);
         super._transfer(_from, _to, _amount);
+        manager.updateReward(_from, _amount);
     }
 
     function _verifyNetworkRegistry(

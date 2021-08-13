@@ -4,10 +4,7 @@
 
 import { Signer, utils, Contract, ContractFactory, Overrides } from "ethers";
 import { Provider, TransactionRequest } from "@ethersproject/providers";
-import type {
-  NetworkRegistry,
-  NetworkRegistryInterface,
-} from "../NetworkRegistry";
+import type { NetworkRegistry, NetworkRegistryInterface } from "../NetworkRegistry";
 
 const _abi = [
   {
@@ -105,19 +102,6 @@ const _abi = [
     name: "addOperator",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "free",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "view",
     type: "function",
   },
   {
@@ -309,14 +293,10 @@ export class NetworkRegistry__factory extends ContractFactory {
     super(_abi, _bytecode, signer);
   }
 
-  deploy(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<NetworkRegistry> {
+  deploy(overrides?: Overrides & { from?: string | Promise<string> }): Promise<NetworkRegistry> {
     return super.deploy(overrides || {}) as Promise<NetworkRegistry>;
   }
-  getDeployTransaction(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): TransactionRequest {
+  getDeployTransaction(overrides?: Overrides & { from?: string | Promise<string> }): TransactionRequest {
     return super.getDeployTransaction(overrides || {});
   }
   attach(address: string): NetworkRegistry {
@@ -330,10 +310,7 @@ export class NetworkRegistry__factory extends ContractFactory {
   static createInterface(): NetworkRegistryInterface {
     return new utils.Interface(_abi) as NetworkRegistryInterface;
   }
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): NetworkRegistry {
+  static connect(address: string, signerOrProvider: Signer | Provider): NetworkRegistry {
     return new Contract(address, _abi, signerOrProvider) as NetworkRegistry;
   }
 }

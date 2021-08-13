@@ -500,14 +500,10 @@ export class CIP36__factory extends ContractFactory {
     super(_abi, _bytecode, signer);
   }
 
-  deploy(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<CIP36> {
+  deploy(overrides?: Overrides & { from?: string | Promise<string> }): Promise<CIP36> {
     return super.deploy(overrides || {}) as Promise<CIP36>;
   }
-  getDeployTransaction(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): TransactionRequest {
+  getDeployTransaction(overrides?: Overrides & { from?: string | Promise<string> }): TransactionRequest {
     return super.getDeployTransaction(overrides || {});
   }
   attach(address: string): CIP36 {

@@ -47,15 +47,15 @@ contract CIP36 is OwnableUpgradeable, ERC20BurnableUpgradeable {
         return 6;
     }
 
-    function creditBalanceOf(address _member) public view returns (uint256) {
+    function creditBalanceOf(address _member) external view returns (uint256) {
         return _members[_member].creditBalance;
     }
 
-    function creditLimitOf(address _member) public view returns (uint256) {
+    function creditLimitOf(address _member) external view returns (uint256) {
         return _members[_member].creditLimit;
     }
 
-    function creditLimitLeftOf(address _member) public view returns (uint256) {
+    function creditLimitLeftOf(address _member) external view returns (uint256) {
         Member memory _localMember = _members[_member];
         if (_localMember.creditBalance >= _localMember.creditLimit) {
             return 0;

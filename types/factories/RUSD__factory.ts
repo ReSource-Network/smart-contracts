@@ -616,14 +616,10 @@ export class RUSD__factory extends ContractFactory {
     super(_abi, _bytecode, signer);
   }
 
-  deploy(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<RUSD> {
+  deploy(overrides?: Overrides & { from?: string | Promise<string> }): Promise<RUSD> {
     return super.deploy(overrides || {}) as Promise<RUSD>;
   }
-  getDeployTransaction(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): TransactionRequest {
+  getDeployTransaction(overrides?: Overrides & { from?: string | Promise<string> }): TransactionRequest {
     return super.getDeployTransaction(overrides || {});
   }
   attach(address: string): RUSD {

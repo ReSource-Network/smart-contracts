@@ -4,10 +4,7 @@
 
 import { Signer, utils, Contract, ContractFactory, Overrides } from "ethers";
 import { Provider, TransactionRequest } from "@ethersproject/providers";
-import type {
-  MutualityToken,
-  MutualityTokenInterface,
-} from "../MutualityToken";
+import type { MutualityToken, MutualityTokenInterface } from "../MutualityToken";
 
 const _abi = [
   {
@@ -303,14 +300,10 @@ export class MutualityToken__factory extends ContractFactory {
     super(_abi, _bytecode, signer);
   }
 
-  deploy(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<MutualityToken> {
+  deploy(overrides?: Overrides & { from?: string | Promise<string> }): Promise<MutualityToken> {
     return super.deploy(overrides || {}) as Promise<MutualityToken>;
   }
-  getDeployTransaction(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): TransactionRequest {
+  getDeployTransaction(overrides?: Overrides & { from?: string | Promise<string> }): TransactionRequest {
     return super.getDeployTransaction(overrides || {});
   }
   attach(address: string): MutualityToken {
@@ -324,10 +317,7 @@ export class MutualityToken__factory extends ContractFactory {
   static createInterface(): MutualityTokenInterface {
     return new utils.Interface(_abi) as MutualityTokenInterface;
   }
-  static connect(
-    address: string,
-    signerOrProvider: Signer | Provider
-  ): MutualityToken {
+  static connect(address: string, signerOrProvider: Signer | Provider): MutualityToken {
     return new Contract(address, _abi, signerOrProvider) as MutualityToken;
   }
 }

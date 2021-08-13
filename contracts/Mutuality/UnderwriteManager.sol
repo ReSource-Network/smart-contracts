@@ -32,36 +32,50 @@ contract UnderwriteManager is OwnableUpgradeable {
     event RewardUpdated(address underwriter, uint256 amount);
     event RewardClaimed(address underwriter, uint256 amount);
 
-    function initialize(address _collateralTokenAddress, address _networkTokenAddress) public virtual initializer {
+    function initialize(
+        address _collateralTokenAddress,
+        address _networkTokenAddress,
+        address owner
+    ) external virtual initializer {
         collateralToken = IERC20(_collateralTokenAddress);
         networkToken = CIP36(_networkTokenAddress);
         isActive = true;
+        __Ownable_init();
+        transferOwnership(owner);
     }
 
     /*
      *  Modifiers
      */
-    modifier onlyNetwork(address networkAddress) {
-        require(address(networkToken) == networkAddress, "Only the network can perform this operation");
-        _;
-    }
-
     modifier notNull(address _address) {
         require(_address != address(0), "invalid operator address");
         _;
     }
 
+    modifier onlyNetwork(address _address) {
+        require(_address == address(networkToken), "invalid network address");
+        _;
+    }
+
+    // modifier underwriterExists(address _underwriter) {
+    //     require(underwriters);
+    // }
+
     /*
      * Public functions
      */
-    function underwrite(uint256 amount, address underwritee) public {
+    function underwrite(uint256 amount, address underwritee) external {
         collateralToken.transferFrom(msg.sender, address(this), amount);
-        // TODO: amount validation
+        // TODO: amount validation and underwritee validation
+        //      1. check that amount is less than current credit balance allowed
+        //      2. check that underwritee isn't already underwritten by another underwriter
         underwriterCollateral[msg.sender][underwritee] = amount;
         underwritees[underwritee] = msg.sender;
+        // TODO: update credit line of underwritee
+        emit Underwrite(msg.sender, amount);
     }
 
-    function withdraw(uint256 amount, address underwritee) public {
+    function withdraw(uint256 amount, address underwritee) external {
         uint256 collateral = underwriterCollateral[msg.sender][underwritee];
         // TODO: check underwritee balance
         require(amount <= collateral, "invalid withdraw amount");
@@ -70,7 +84,7 @@ contract UnderwriteManager is OwnableUpgradeable {
         emit Withdrawl(msg.sender, amount);
     }
 
-    function updateReward(address underwritee, uint256 txAmount) public onlyNetwork(msg.sender) {
+    function updateReward(address underwritee, uint256 txAmount) external onlyNetwork(msg.sender) {
         address underwriter = underwritees[underwritee];
         if (underwriter == address(0)) {
             return;
@@ -80,21 +94,20 @@ contract UnderwriteManager is OwnableUpgradeable {
         emit RewardUpdated(msg.sender, reward);
     }
 
-    function claimReward() public {
+    function claimReward() external {
         uint256 reward = rewards[msg.sender];
         require(reward > 0, "No reward to claim");
         collateralToken.transfer(msg.sender, reward);
         emit RewardClaimed(msg.sender, reward);
     }
 
-    function toggleActive() public onlyOwner() {
+    function toggleActive() external onlyOwner() {
         isActive = !isActive;
     }
 
     /*
      * Private functions
      */
-
     function calculateReward(uint256 txAmount) private returns (uint256) {
         return txAmount.mul(2).div(100);
     }

@@ -6,7 +6,7 @@ import "./NetworkRegistry.sol";
 import "./Mutuality/UnderwriteManager.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
-contract RUSD is Initializable, CIP36 {
+contract RUSD is CIP36 {
     using SafeMath for *;
 
     /*
@@ -26,7 +26,7 @@ contract RUSD is Initializable, CIP36 {
      *  Storage
      */
     NetworkRegistry public registry;
-    UnderwriteManager public manager;
+    UnderwriteManager public underwriteManager;
 
     Restriction public restrictionState;
     uint256 restrictionRenewal;
@@ -34,12 +34,13 @@ contract RUSD is Initializable, CIP36 {
 
     function initializeRUSD(
         address registryAddress,
-        address underwriteAddress,
+        address mutualityAddress,
         uint256 _expiration
-    ) public virtual initializer {
-        CIP36.initialize("rUSD", "rUSD");
+    ) external virtual initializer {
         registry = NetworkRegistry(registryAddress);
-        manager = UnderwriteManager(underwriteAddress);
+        underwriteManager = new UnderwriteManager();
+        underwriteManager.initialize(mutualityAddress, address(this), msg.sender);
+        CIP36.initialize("rUSD", "rUSD", address(underwriteManager));
         restrictionState = Restriction.REGISTERED;
         restrictionRenewal = block.timestamp;
         expirationSeconds = _expiration;
@@ -55,7 +56,7 @@ contract RUSD is Initializable, CIP36 {
     ) internal override {
         _verifyNetworkRegistry(_from, _to, _amount);
         super._transfer(_from, _to, _amount);
-        manager.updateReward(_from, _amount);
+        underwriteManager.updateReward(_from, _amount);
     }
 
     function _verifyNetworkRegistry(

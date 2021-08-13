@@ -2,6 +2,7 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
 /// @title NetworkRegistry - Allows Network Members to be added and removed by Network Operators.
 /// @author Bridger Zoske - <bridger@resourcenetwork.co>
@@ -21,6 +22,8 @@ contract NetworkRegistry is OwnableUpgradeable {
     mapping(address => bool) public isOperator;
     address[] public operators;
     address[] public members;
+
+    bool public free;
 
     /*
      *  Modifiers

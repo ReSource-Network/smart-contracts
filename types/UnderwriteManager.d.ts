@@ -23,7 +23,7 @@ interface UnderwriteManagerInterface extends ethers.utils.Interface {
   functions: {
     "claimReward()": FunctionFragment;
     "collateralToken()": FunctionFragment;
-    "initialize(address,address)": FunctionFragment;
+    "initialize(address,address,address)": FunctionFragment;
     "isActive()": FunctionFragment;
     "networkToken()": FunctionFragment;
     "owner()": FunctionFragment;
@@ -48,7 +48,7 @@ interface UnderwriteManagerInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "initialize",
-    values: [string, string]
+    values: [string, string, string]
   ): string;
   encodeFunctionData(functionFragment: "isActive", values?: undefined): string;
   encodeFunctionData(
@@ -201,6 +201,7 @@ export class UnderwriteManager extends BaseContract {
     initialize(
       _collateralTokenAddress: string,
       _networkTokenAddress: string,
+      owner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -261,6 +262,7 @@ export class UnderwriteManager extends BaseContract {
   initialize(
     _collateralTokenAddress: string,
     _networkTokenAddress: string,
+    owner: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -319,6 +321,7 @@ export class UnderwriteManager extends BaseContract {
     initialize(
       _collateralTokenAddress: string,
       _networkTokenAddress: string,
+      owner: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -418,6 +421,7 @@ export class UnderwriteManager extends BaseContract {
     initialize(
       _collateralTokenAddress: string,
       _networkTokenAddress: string,
+      owner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -479,6 +483,7 @@ export class UnderwriteManager extends BaseContract {
     initialize(
       _collateralTokenAddress: string,
       _networkTokenAddress: string,
+      owner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

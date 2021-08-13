@@ -1,10 +1,11 @@
-import { waffle, ethers, upgrades } from "hardhat";
+import { ethers, upgrades } from "hardhat";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
 import { expect } from "chai";
 import chai from "chai";
 import { solidity } from "ethereum-waffle";
 import { RUSD } from "../types/RUSD";
 import { NetworkRegistry } from "../types/NetworkRegistry";
+import { MutualityToken } from "../types/MutualityToken";
 chai.use(solidity);
 
 const sleep = (milliseconds: number) => {
@@ -24,6 +25,7 @@ describe("RUSD Tests", function () {
   let nonMemberC: SignerWithAddress;
   let operatorA: SignerWithAddress;
   let rUSD: RUSD;
+  let mutualityToken: MutualityToken;
   let networkRegistry: NetworkRegistry;
 
   before(async function () {
@@ -45,11 +47,15 @@ describe("RUSD Tests", function () {
       [operatorA.address],
     ])) as NetworkRegistry;
 
+    const mutualityTokenFactory = await ethers.getContractFactory("MutualityToken");
+
+    mutualityToken = (await upgrades.deployProxy(mutualityTokenFactory, [
+      ethers.utils.parseEther("10000000"),
+    ])) as MutualityToken;
+
     const rUSDFactory = await ethers.getContractFactory("RUSD");
 
-    // console.log(networkRegistry.address);
-
-    rUSD = (await upgrades.deployProxy(rUSDFactory, [networkRegistry.address, 7], {
+    rUSD = (await upgrades.deployProxy(rUSDFactory, [networkRegistry.address, mutualityToken.address, 7], {
       initializer: "initializeRUSD",
     })) as RUSD;
 

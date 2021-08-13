@@ -49,7 +49,7 @@ describe("RUSD Tests", function () {
 
     // console.log(networkRegistry.address);
 
-    rUSD = (await upgrades.deployProxy(rUSDFactory, [networkRegistry.address, 7], {
+    rUSD = (await upgrades.deployProxy(rUSDFactory, [networkRegistry.address, 10], {
       initializer: "initializeRUSD",
     })) as RUSD;
 
@@ -109,6 +109,11 @@ describe("RUSD Tests", function () {
 
     await expect(rUSD.connect(memberA).transfer(nonMemberA.address, ethers.utils.parseUnits("30.0", "mwei"))).to.be
       .reverted;
+
+    await expect(rUSD.connect(memberA).transfer(nonMemberA.address, ethers.utils.parseUnits("20.0", "mwei"))).to.emit(
+      rUSD,
+      "Transfer",
+    );
   });
 
   it("Unsuccessfully update RUSD to NONE restriction state", async function () {
@@ -126,7 +131,7 @@ describe("RUSD Tests", function () {
   });
 
   it("Updates RUSD to NONE restriction state by nonOwner", async function () {
-    sleep(8000);
+    sleep(10000);
     await expect(rUSD.connect(memberA).removeRestrictions()).to.emit(rUSD, "RestrictionUpdated");
     const state = await rUSD.restrictionState();
     expect(state).to.equal(2);
@@ -141,5 +146,10 @@ describe("RUSD Tests", function () {
     await expect(
       rUSD.connect(nonMemberB).transfer(nonMemberC.address, ethers.utils.parseUnits("300.0", "mwei")),
     ).to.emit(rUSD, "Transfer");
+
+    await expect(rUSD.connect(memberB).transfer(nonMemberC.address, ethers.utils.parseUnits("300.0", "mwei"))).to.emit(
+      rUSD,
+      "Transfer",
+    );
   });
 });

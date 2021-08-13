@@ -29,7 +29,7 @@ contract RUSD is Initializable, CIP36 {
     uint256 restrictionRenewal;
     uint256 expirationSeconds;
 
-    function initializeRUSD(address registryAddress, uint256 _expiration) public virtual initializer {
+    function initializeRUSD(address registryAddress, uint256 _expiration) external virtual initializer {
         CIP36.initialize("rUSD", "rUSD");
         registry = NetworkRegistry(registryAddress);
         restrictionState = Restriction.REGISTERED;
@@ -53,7 +53,7 @@ contract RUSD is Initializable, CIP36 {
         address _from,
         address _to,
         uint256 _amount
-    ) private {
+    ) private view {
         if (restrictionState == Restriction.NONE) {
             return;
         }
@@ -88,7 +88,7 @@ contract RUSD is Initializable, CIP36 {
         if (restrictionState == Restriction.NONE) {
             revert("Already non restrictive");
         }
-        if ((block.timestamp - restrictionRenewal) / 1 seconds < expirationSeconds) {
+        if ((block.timestamp - restrictionRenewal) < expirationSeconds) {
             revert("Restriction state not expired...");
         }
         emit RestrictionUpdated(Restriction.NONE);

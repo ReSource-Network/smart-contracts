@@ -112,7 +112,7 @@ contract MultiSigWallet {
     /// @dev Allows to add a new owner. Transaction has to be sent by wallet.
     /// @param owner Address of new owner.
     function addOwner(address owner)
-        public
+        external
         onlyWallet
         ownerDoesNotExist(owner)
         notNull(owner)
@@ -125,7 +125,7 @@ contract MultiSigWallet {
 
     /// @dev Allows to remove an owner. Transaction has to be sent by wallet.
     /// @param owner Address of owner.
-    function removeOwner(address owner) public onlyWallet ownerExists(owner) {
+    function removeOwner(address owner) external onlyWallet ownerExists(owner) {
         isOwner[owner] = false;
         for (uint256 i = 0; i < owners.length - 1; i++)
             if (owners[i] == owner) {
@@ -141,7 +141,7 @@ contract MultiSigWallet {
     /// @param owner Address of owner to be replaced.
     /// @param newOwner Address of new owner.
     function replaceOwner(address owner, address newOwner)
-        public
+        external
         onlyWallet
         ownerExists(owner)
         ownerDoesNotExist(newOwner)
@@ -438,7 +438,7 @@ contract MultiSigWallet {
             executed: false
         });
         transactionCount += 1;
-        Submission(transactionId);
+        emit Submission(transactionId);
     }
 
     /*
@@ -447,7 +447,7 @@ contract MultiSigWallet {
     /// @dev Returns number of confirmations of a transaction.
     /// @param transactionId Transaction ID.
     /// @return count Number of confirmations.
-    function getConfirmationCount(uint256 transactionId) public view returns (uint256 count) {
+    function getConfirmationCount(uint256 transactionId) external view returns (uint256 count) {
         for (uint256 i = 0; i < owners.length; i++) if (confirmations[transactionId][owners[i]]) count += 1;
     }
 
@@ -455,21 +455,21 @@ contract MultiSigWallet {
     /// @param pending Include pending transactions.
     /// @param executed Include executed transactions.
     /// @return count Total number of transactions after filters are applied.
-    function getTransactionCount(bool pending, bool executed) public view returns (uint256 count) {
+    function getTransactionCount(bool pending, bool executed) external view returns (uint256 count) {
         for (uint256 i = 0; i < transactionCount; i++)
             if ((pending && !transactions[i].executed) || (executed && transactions[i].executed)) count += 1;
     }
 
     /// @dev Returns list of owners.
     /// @return List of owner addresses.
-    function getOwners() public view returns (address[] memory) {
+    function getOwners() external view returns (address[] memory) {
         return owners;
     }
 
     /// @dev Returns array with owner addresses, which confirmed transaction.
     /// @param transactionId Transaction ID.
     /// @return _confirmations Returns array of owner addresses.
-    function getConfirmations(uint256 transactionId) public view returns (address[] memory _confirmations) {
+    function getConfirmations(uint256 transactionId) external view returns (address[] memory _confirmations) {
         address[] memory confirmationsTemp = new address[](owners.length);
         uint256 count = 0;
         uint256 i;
@@ -493,7 +493,7 @@ contract MultiSigWallet {
         uint256 to,
         bool pending,
         bool executed
-    ) public view returns (uint256[] memory _transactionIds) {
+    ) external view returns (uint256[] memory _transactionIds) {
         uint256[] memory transactionIdsTemp = new uint256[](transactionCount);
         uint256 count = 0;
         uint256 i;

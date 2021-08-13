@@ -49,68 +49,179 @@ interface MultiSigWalletInterface extends ethers.utils.Interface {
     "transactions(uint256)": FunctionFragment;
   };
 
-  encodeFunctionData(functionFragment: "MAX_OWNER_COUNT", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "MAX_OWNER_COUNT",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "addOwner", values: [string]): string;
-  encodeFunctionData(functionFragment: "changeRequirement", values: [BigNumberish]): string;
-  encodeFunctionData(functionFragment: "confirmTransactionByRelay", values: [BigNumberish, BytesLike, string]): string;
-  encodeFunctionData(functionFragment: "confirmations", values: [BigNumberish, string]): string;
-  encodeFunctionData(functionFragment: "executeTransactionByRelay", values: [BigNumberish, BytesLike, string]): string;
-  encodeFunctionData(functionFragment: "getConfirmationCount", values: [BigNumberish]): string;
-  encodeFunctionData(functionFragment: "getConfirmations", values: [BigNumberish]): string;
+  encodeFunctionData(
+    functionFragment: "changeRequirement",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "confirmTransactionByRelay",
+    values: [BigNumberish, BytesLike, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "confirmations",
+    values: [BigNumberish, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "executeTransactionByRelay",
+    values: [BigNumberish, BytesLike, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getConfirmationCount",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getConfirmations",
+    values: [BigNumberish]
+  ): string;
   encodeFunctionData(functionFragment: "getOwners", values?: undefined): string;
-  encodeFunctionData(functionFragment: "getTransactionCount", values: [boolean, boolean]): string;
+  encodeFunctionData(
+    functionFragment: "getTransactionCount",
+    values: [boolean, boolean]
+  ): string;
   encodeFunctionData(
     functionFragment: "getTransactionIds",
-    values: [BigNumberish, BigNumberish, boolean, boolean],
+    values: [BigNumberish, BigNumberish, boolean, boolean]
   ): string;
-  encodeFunctionData(functionFragment: "isConfirmed", values: [BigNumberish]): string;
+  encodeFunctionData(
+    functionFragment: "isConfirmed",
+    values: [BigNumberish]
+  ): string;
   encodeFunctionData(functionFragment: "isOwner", values: [string]): string;
   encodeFunctionData(functionFragment: "nonces", values: [string]): string;
-  encodeFunctionData(functionFragment: "owners", values: [BigNumberish]): string;
-  encodeFunctionData(functionFragment: "prepareConfirmTransaction", values: [BigNumberish, BigNumberish]): string;
-  encodeFunctionData(functionFragment: "prepareExecuteTransaction", values: [BigNumberish, BigNumberish]): string;
-  encodeFunctionData(functionFragment: "prepareRevokeConfirmation", values: [BigNumberish, BigNumberish]): string;
+  encodeFunctionData(
+    functionFragment: "owners",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "prepareConfirmTransaction",
+    values: [BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "prepareExecuteTransaction",
+    values: [BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "prepareRevokeConfirmation",
+    values: [BigNumberish, BigNumberish]
+  ): string;
   encodeFunctionData(
     functionFragment: "prepareSubmitTransaction",
-    values: [string, BigNumberish, BytesLike, BigNumberish],
+    values: [string, BigNumberish, BytesLike, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "removeOwner", values: [string]): string;
-  encodeFunctionData(functionFragment: "replaceOwner", values: [string, string]): string;
+  encodeFunctionData(
+    functionFragment: "replaceOwner",
+    values: [string, string]
+  ): string;
   encodeFunctionData(functionFragment: "required", values?: undefined): string;
-  encodeFunctionData(functionFragment: "revokeConfirmationByRelay", values: [BigNumberish, BytesLike, string]): string;
+  encodeFunctionData(
+    functionFragment: "revokeConfirmationByRelay",
+    values: [BigNumberish, BytesLike, string]
+  ): string;
   encodeFunctionData(
     functionFragment: "submitTransactionByRelay",
-    values: [string, BigNumberish, BytesLike, BytesLike, string],
+    values: [string, BigNumberish, BytesLike, BytesLike, string]
   ): string;
-  encodeFunctionData(functionFragment: "transactionCount", values?: undefined): string;
-  encodeFunctionData(functionFragment: "transactions", values: [BigNumberish]): string;
+  encodeFunctionData(
+    functionFragment: "transactionCount",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "transactions",
+    values: [BigNumberish]
+  ): string;
 
-  decodeFunctionResult(functionFragment: "MAX_OWNER_COUNT", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "MAX_OWNER_COUNT",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "addOwner", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "changeRequirement", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "confirmTransactionByRelay", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "confirmations", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "executeTransactionByRelay", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "getConfirmationCount", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "getConfirmations", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "changeRequirement",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "confirmTransactionByRelay",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "confirmations",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "executeTransactionByRelay",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getConfirmationCount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getConfirmations",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "getOwners", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "getTransactionCount", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "getTransactionIds", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "isConfirmed", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getTransactionCount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getTransactionIds",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "isConfirmed",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "isOwner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "nonces", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owners", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "prepareConfirmTransaction", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "prepareExecuteTransaction", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "prepareRevokeConfirmation", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "prepareSubmitTransaction", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "removeOwner", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "replaceOwner", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "prepareConfirmTransaction",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "prepareExecuteTransaction",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "prepareRevokeConfirmation",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "prepareSubmitTransaction",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "removeOwner",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "replaceOwner",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "required", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "revokeConfirmationByRelay", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "submitTransactionByRelay", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "transactionCount", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "transactions", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "revokeConfirmationByRelay",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "submitTransactionByRelay",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "transactionCount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "transactions",
+    data: BytesLike
+  ): Result;
 
   events: {
     "Confirmation(address,uint256)": EventFragment;
@@ -141,26 +252,26 @@ export class MultiSigWallet extends BaseContract {
   deployed(): Promise<this>;
 
   listeners<EventArgsArray extends Array<any>, EventArgsObject>(
-    eventFilter?: TypedEventFilter<EventArgsArray, EventArgsObject>,
+    eventFilter?: TypedEventFilter<EventArgsArray, EventArgsObject>
   ): Array<TypedListener<EventArgsArray, EventArgsObject>>;
   off<EventArgsArray extends Array<any>, EventArgsObject>(
     eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
-    listener: TypedListener<EventArgsArray, EventArgsObject>,
+    listener: TypedListener<EventArgsArray, EventArgsObject>
   ): this;
   on<EventArgsArray extends Array<any>, EventArgsObject>(
     eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
-    listener: TypedListener<EventArgsArray, EventArgsObject>,
+    listener: TypedListener<EventArgsArray, EventArgsObject>
   ): this;
   once<EventArgsArray extends Array<any>, EventArgsObject>(
     eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
-    listener: TypedListener<EventArgsArray, EventArgsObject>,
+    listener: TypedListener<EventArgsArray, EventArgsObject>
   ): this;
   removeListener<EventArgsArray extends Array<any>, EventArgsObject>(
     eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
-    listener: TypedListener<EventArgsArray, EventArgsObject>,
+    listener: TypedListener<EventArgsArray, EventArgsObject>
   ): this;
   removeAllListeners<EventArgsArray extends Array<any>, EventArgsObject>(
-    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
+    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>
   ): this;
 
   listeners(eventName?: string): Array<Listener>;
@@ -173,7 +284,7 @@ export class MultiSigWallet extends BaseContract {
   queryFilter<EventArgsArray extends Array<any>, EventArgsObject>(
     event: TypedEventFilter<EventArgsArray, EventArgsObject>,
     fromBlockOrBlockhash?: string | number | undefined,
-    toBlock?: string | number | undefined,
+    toBlock?: string | number | undefined
   ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
 
   interface: MultiSigWalletInterface;
@@ -181,37 +292,44 @@ export class MultiSigWallet extends BaseContract {
   functions: {
     MAX_OWNER_COUNT(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    addOwner(owner: string, overrides?: Overrides & { from?: string | Promise<string> }): Promise<ContractTransaction>;
+    addOwner(
+      owner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     changeRequirement(
       _required: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> },
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     confirmTransactionByRelay(
       transactionId: BigNumberish,
       sig: BytesLike,
       signer: string,
-      overrides?: Overrides & { from?: string | Promise<string> },
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    confirmations(arg0: BigNumberish, arg1: string, overrides?: CallOverrides): Promise<[boolean]>;
+    confirmations(
+      arg0: BigNumberish,
+      arg1: string,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
 
     executeTransactionByRelay(
       transactionId: BigNumberish,
       sig: BytesLike,
       signer: string,
-      overrides?: Overrides & { from?: string | Promise<string> },
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     getConfirmationCount(
       transactionId: BigNumberish,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<[BigNumber] & { count: BigNumber }>;
 
     getConfirmations(
       transactionId: BigNumberish,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<[string[]] & { _confirmations: string[] }>;
 
     getOwners(overrides?: CallOverrides): Promise<[string[]]>;
@@ -219,7 +337,7 @@ export class MultiSigWallet extends BaseContract {
     getTransactionCount(
       pending: boolean,
       executed: boolean,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<[BigNumber] & { count: BigNumber }>;
 
     getTransactionIds(
@@ -227,10 +345,13 @@ export class MultiSigWallet extends BaseContract {
       to: BigNumberish,
       pending: boolean,
       executed: boolean,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<[BigNumber[]] & { _transactionIds: BigNumber[] }>;
 
-    isConfirmed(transactionId: BigNumberish, overrides?: CallOverrides): Promise<[boolean]>;
+    isConfirmed(
+      transactionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
 
     isOwner(arg0: string, overrides?: CallOverrides): Promise<[boolean]>;
 
@@ -241,19 +362,19 @@ export class MultiSigWallet extends BaseContract {
     prepareConfirmTransaction(
       transactionId: BigNumberish,
       nonce: BigNumberish,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<[string]>;
 
     prepareExecuteTransaction(
       transactionId: BigNumberish,
       nonce: BigNumberish,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<[string]>;
 
     prepareRevokeConfirmation(
       transactionId: BigNumberish,
       nonce: BigNumberish,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<[string]>;
 
     prepareSubmitTransaction(
@@ -261,18 +382,18 @@ export class MultiSigWallet extends BaseContract {
       value: BigNumberish,
       data: BytesLike,
       nonce: BigNumberish,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<[string]>;
 
     removeOwner(
       owner: string,
-      overrides?: Overrides & { from?: string | Promise<string> },
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     replaceOwner(
       owner: string,
       newOwner: string,
-      overrides?: Overrides & { from?: string | Promise<string> },
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     required(overrides?: CallOverrides): Promise<[BigNumber]>;
@@ -281,7 +402,7 @@ export class MultiSigWallet extends BaseContract {
       transactionId: BigNumberish,
       sig: BytesLike,
       signer: string,
-      overrides?: Overrides & { from?: string | Promise<string> },
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     submitTransactionByRelay(
@@ -290,14 +411,14 @@ export class MultiSigWallet extends BaseContract {
       data: BytesLike,
       sig: BytesLike,
       signer: string,
-      overrides?: Overrides & { from?: string | Promise<string> },
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     transactionCount(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     transactions(
       arg0: BigNumberish,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<
       [string, BigNumber, string, boolean] & {
         destination: string;
@@ -310,46 +431,66 @@ export class MultiSigWallet extends BaseContract {
 
   MAX_OWNER_COUNT(overrides?: CallOverrides): Promise<BigNumber>;
 
-  addOwner(owner: string, overrides?: Overrides & { from?: string | Promise<string> }): Promise<ContractTransaction>;
+  addOwner(
+    owner: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   changeRequirement(
     _required: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> },
+    overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   confirmTransactionByRelay(
     transactionId: BigNumberish,
     sig: BytesLike,
     signer: string,
-    overrides?: Overrides & { from?: string | Promise<string> },
+    overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  confirmations(arg0: BigNumberish, arg1: string, overrides?: CallOverrides): Promise<boolean>;
+  confirmations(
+    arg0: BigNumberish,
+    arg1: string,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   executeTransactionByRelay(
     transactionId: BigNumberish,
     sig: BytesLike,
     signer: string,
-    overrides?: Overrides & { from?: string | Promise<string> },
+    overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  getConfirmationCount(transactionId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+  getConfirmationCount(
+    transactionId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
-  getConfirmations(transactionId: BigNumberish, overrides?: CallOverrides): Promise<string[]>;
+  getConfirmations(
+    transactionId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<string[]>;
 
   getOwners(overrides?: CallOverrides): Promise<string[]>;
 
-  getTransactionCount(pending: boolean, executed: boolean, overrides?: CallOverrides): Promise<BigNumber>;
+  getTransactionCount(
+    pending: boolean,
+    executed: boolean,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   getTransactionIds(
     from: BigNumberish,
     to: BigNumberish,
     pending: boolean,
     executed: boolean,
-    overrides?: CallOverrides,
+    overrides?: CallOverrides
   ): Promise<BigNumber[]>;
 
-  isConfirmed(transactionId: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
+  isConfirmed(
+    transactionId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   isOwner(arg0: string, overrides?: CallOverrides): Promise<boolean>;
 
@@ -360,19 +501,19 @@ export class MultiSigWallet extends BaseContract {
   prepareConfirmTransaction(
     transactionId: BigNumberish,
     nonce: BigNumberish,
-    overrides?: CallOverrides,
+    overrides?: CallOverrides
   ): Promise<string>;
 
   prepareExecuteTransaction(
     transactionId: BigNumberish,
     nonce: BigNumberish,
-    overrides?: CallOverrides,
+    overrides?: CallOverrides
   ): Promise<string>;
 
   prepareRevokeConfirmation(
     transactionId: BigNumberish,
     nonce: BigNumberish,
-    overrides?: CallOverrides,
+    overrides?: CallOverrides
   ): Promise<string>;
 
   prepareSubmitTransaction(
@@ -380,15 +521,18 @@ export class MultiSigWallet extends BaseContract {
     value: BigNumberish,
     data: BytesLike,
     nonce: BigNumberish,
-    overrides?: CallOverrides,
+    overrides?: CallOverrides
   ): Promise<string>;
 
-  removeOwner(owner: string, overrides?: Overrides & { from?: string | Promise<string> }): Promise<ContractTransaction>;
+  removeOwner(
+    owner: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   replaceOwner(
     owner: string,
     newOwner: string,
-    overrides?: Overrides & { from?: string | Promise<string> },
+    overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   required(overrides?: CallOverrides): Promise<BigNumber>;
@@ -397,7 +541,7 @@ export class MultiSigWallet extends BaseContract {
     transactionId: BigNumberish,
     sig: BytesLike,
     signer: string,
-    overrides?: Overrides & { from?: string | Promise<string> },
+    overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   submitTransactionByRelay(
@@ -406,14 +550,14 @@ export class MultiSigWallet extends BaseContract {
     data: BytesLike,
     sig: BytesLike,
     signer: string,
-    overrides?: Overrides & { from?: string | Promise<string> },
+    overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   transactionCount(overrides?: CallOverrides): Promise<BigNumber>;
 
   transactions(
     arg0: BigNumberish,
-    overrides?: CallOverrides,
+    overrides?: CallOverrides
   ): Promise<
     [string, BigNumber, string, boolean] & {
       destination: string;
@@ -428,41 +572,61 @@ export class MultiSigWallet extends BaseContract {
 
     addOwner(owner: string, overrides?: CallOverrides): Promise<void>;
 
-    changeRequirement(_required: BigNumberish, overrides?: CallOverrides): Promise<void>;
+    changeRequirement(
+      _required: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     confirmTransactionByRelay(
       transactionId: BigNumberish,
       sig: BytesLike,
       signer: string,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<void>;
 
-    confirmations(arg0: BigNumberish, arg1: string, overrides?: CallOverrides): Promise<boolean>;
+    confirmations(
+      arg0: BigNumberish,
+      arg1: string,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     executeTransactionByRelay(
       transactionId: BigNumberish,
       sig: BytesLike,
       signer: string,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<void>;
 
-    getConfirmationCount(transactionId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+    getConfirmationCount(
+      transactionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
-    getConfirmations(transactionId: BigNumberish, overrides?: CallOverrides): Promise<string[]>;
+    getConfirmations(
+      transactionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<string[]>;
 
     getOwners(overrides?: CallOverrides): Promise<string[]>;
 
-    getTransactionCount(pending: boolean, executed: boolean, overrides?: CallOverrides): Promise<BigNumber>;
+    getTransactionCount(
+      pending: boolean,
+      executed: boolean,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     getTransactionIds(
       from: BigNumberish,
       to: BigNumberish,
       pending: boolean,
       executed: boolean,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<BigNumber[]>;
 
-    isConfirmed(transactionId: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
+    isConfirmed(
+      transactionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     isOwner(arg0: string, overrides?: CallOverrides): Promise<boolean>;
 
@@ -473,19 +637,19 @@ export class MultiSigWallet extends BaseContract {
     prepareConfirmTransaction(
       transactionId: BigNumberish,
       nonce: BigNumberish,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<string>;
 
     prepareExecuteTransaction(
       transactionId: BigNumberish,
       nonce: BigNumberish,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<string>;
 
     prepareRevokeConfirmation(
       transactionId: BigNumberish,
       nonce: BigNumberish,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<string>;
 
     prepareSubmitTransaction(
@@ -493,12 +657,16 @@ export class MultiSigWallet extends BaseContract {
       value: BigNumberish,
       data: BytesLike,
       nonce: BigNumberish,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<string>;
 
     removeOwner(owner: string, overrides?: CallOverrides): Promise<void>;
 
-    replaceOwner(owner: string, newOwner: string, overrides?: CallOverrides): Promise<void>;
+    replaceOwner(
+      owner: string,
+      newOwner: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     required(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -506,7 +674,7 @@ export class MultiSigWallet extends BaseContract {
       transactionId: BigNumberish,
       sig: BytesLike,
       signer: string,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<void>;
 
     submitTransactionByRelay(
@@ -515,14 +683,14 @@ export class MultiSigWallet extends BaseContract {
       data: BytesLike,
       sig: BytesLike,
       signer: string,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     transactionCount(overrides?: CallOverrides): Promise<BigNumber>;
 
     transactions(
       arg0: BigNumberish,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<
       [string, BigNumber, string, boolean] & {
         destination: string;
@@ -536,75 +704,116 @@ export class MultiSigWallet extends BaseContract {
   filters: {
     Confirmation(
       sender?: string | null,
-      transactionId?: BigNumberish | null,
-    ): TypedEventFilter<[string, BigNumber], { sender: string; transactionId: BigNumber }>;
+      transactionId?: BigNumberish | null
+    ): TypedEventFilter<
+      [string, BigNumber],
+      { sender: string; transactionId: BigNumber }
+    >;
 
     Deposit(
       sender?: string | null,
-      value?: null,
-    ): TypedEventFilter<[string, BigNumber], { sender: string; value: BigNumber }>;
+      value?: null
+    ): TypedEventFilter<
+      [string, BigNumber],
+      { sender: string; value: BigNumber }
+    >;
 
-    Execution(transactionId?: BigNumberish | null): TypedEventFilter<[BigNumber], { transactionId: BigNumber }>;
+    Execution(
+      transactionId?: BigNumberish | null
+    ): TypedEventFilter<[BigNumber], { transactionId: BigNumber }>;
 
-    ExecutionFailure(transactionId?: BigNumberish | null): TypedEventFilter<[BigNumber], { transactionId: BigNumber }>;
+    ExecutionFailure(
+      transactionId?: BigNumberish | null
+    ): TypedEventFilter<[BigNumber], { transactionId: BigNumber }>;
 
-    OwnerAddition(owner?: string | null): TypedEventFilter<[string], { owner: string }>;
+    OwnerAddition(
+      owner?: string | null
+    ): TypedEventFilter<[string], { owner: string }>;
 
-    OwnerRemoval(owner?: string | null): TypedEventFilter<[string], { owner: string }>;
+    OwnerRemoval(
+      owner?: string | null
+    ): TypedEventFilter<[string], { owner: string }>;
 
-    RequirementChange(required?: null): TypedEventFilter<[BigNumber], { required: BigNumber }>;
+    RequirementChange(
+      required?: null
+    ): TypedEventFilter<[BigNumber], { required: BigNumber }>;
 
     Revocation(
       sender?: string | null,
-      transactionId?: BigNumberish | null,
-    ): TypedEventFilter<[string, BigNumber], { sender: string; transactionId: BigNumber }>;
+      transactionId?: BigNumberish | null
+    ): TypedEventFilter<
+      [string, BigNumber],
+      { sender: string; transactionId: BigNumber }
+    >;
 
-    Submission(transactionId?: BigNumberish | null): TypedEventFilter<[BigNumber], { transactionId: BigNumber }>;
+    Submission(
+      transactionId?: BigNumberish | null
+    ): TypedEventFilter<[BigNumber], { transactionId: BigNumber }>;
   };
 
   estimateGas: {
     MAX_OWNER_COUNT(overrides?: CallOverrides): Promise<BigNumber>;
 
-    addOwner(owner: string, overrides?: Overrides & { from?: string | Promise<string> }): Promise<BigNumber>;
+    addOwner(
+      owner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
 
     changeRequirement(
       _required: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> },
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     confirmTransactionByRelay(
       transactionId: BigNumberish,
       sig: BytesLike,
       signer: string,
-      overrides?: Overrides & { from?: string | Promise<string> },
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    confirmations(arg0: BigNumberish, arg1: string, overrides?: CallOverrides): Promise<BigNumber>;
+    confirmations(
+      arg0: BigNumberish,
+      arg1: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     executeTransactionByRelay(
       transactionId: BigNumberish,
       sig: BytesLike,
       signer: string,
-      overrides?: Overrides & { from?: string | Promise<string> },
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    getConfirmationCount(transactionId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+    getConfirmationCount(
+      transactionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
-    getConfirmations(transactionId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+    getConfirmations(
+      transactionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     getOwners(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getTransactionCount(pending: boolean, executed: boolean, overrides?: CallOverrides): Promise<BigNumber>;
+    getTransactionCount(
+      pending: boolean,
+      executed: boolean,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     getTransactionIds(
       from: BigNumberish,
       to: BigNumberish,
       pending: boolean,
       executed: boolean,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    isConfirmed(transactionId: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+    isConfirmed(
+      transactionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     isOwner(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -615,19 +824,19 @@ export class MultiSigWallet extends BaseContract {
     prepareConfirmTransaction(
       transactionId: BigNumberish,
       nonce: BigNumberish,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     prepareExecuteTransaction(
       transactionId: BigNumberish,
       nonce: BigNumberish,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     prepareRevokeConfirmation(
       transactionId: BigNumberish,
       nonce: BigNumberish,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     prepareSubmitTransaction(
@@ -635,15 +844,18 @@ export class MultiSigWallet extends BaseContract {
       value: BigNumberish,
       data: BytesLike,
       nonce: BigNumberish,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    removeOwner(owner: string, overrides?: Overrides & { from?: string | Promise<string> }): Promise<BigNumber>;
+    removeOwner(
+      owner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
 
     replaceOwner(
       owner: string,
       newOwner: string,
-      overrides?: Overrides & { from?: string | Promise<string> },
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     required(overrides?: CallOverrides): Promise<BigNumber>;
@@ -652,7 +864,7 @@ export class MultiSigWallet extends BaseContract {
       transactionId: BigNumberish,
       sig: BytesLike,
       signer: string,
-      overrides?: Overrides & { from?: string | Promise<string> },
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     submitTransactionByRelay(
@@ -661,80 +873,112 @@ export class MultiSigWallet extends BaseContract {
       data: BytesLike,
       sig: BytesLike,
       signer: string,
-      overrides?: Overrides & { from?: string | Promise<string> },
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     transactionCount(overrides?: CallOverrides): Promise<BigNumber>;
 
-    transactions(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+    transactions(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
     MAX_OWNER_COUNT(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    addOwner(owner: string, overrides?: Overrides & { from?: string | Promise<string> }): Promise<PopulatedTransaction>;
+    addOwner(
+      owner: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
 
     changeRequirement(
       _required: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> },
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     confirmTransactionByRelay(
       transactionId: BigNumberish,
       sig: BytesLike,
       signer: string,
-      overrides?: Overrides & { from?: string | Promise<string> },
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    confirmations(arg0: BigNumberish, arg1: string, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    confirmations(
+      arg0: BigNumberish,
+      arg1: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     executeTransactionByRelay(
       transactionId: BigNumberish,
       sig: BytesLike,
       signer: string,
-      overrides?: Overrides & { from?: string | Promise<string> },
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    getConfirmationCount(transactionId: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    getConfirmationCount(
+      transactionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
-    getConfirmations(transactionId: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    getConfirmations(
+      transactionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     getOwners(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    getTransactionCount(pending: boolean, executed: boolean, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    getTransactionCount(
+      pending: boolean,
+      executed: boolean,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     getTransactionIds(
       from: BigNumberish,
       to: BigNumberish,
       pending: boolean,
       executed: boolean,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    isConfirmed(transactionId: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    isConfirmed(
+      transactionId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
-    isOwner(arg0: string, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    isOwner(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
-    nonces(arg0: string, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    nonces(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
-    owners(arg0: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    owners(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     prepareConfirmTransaction(
       transactionId: BigNumberish,
       nonce: BigNumberish,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     prepareExecuteTransaction(
       transactionId: BigNumberish,
       nonce: BigNumberish,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     prepareRevokeConfirmation(
       transactionId: BigNumberish,
       nonce: BigNumberish,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     prepareSubmitTransaction(
@@ -742,18 +986,18 @@ export class MultiSigWallet extends BaseContract {
       value: BigNumberish,
       data: BytesLike,
       nonce: BigNumberish,
-      overrides?: CallOverrides,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     removeOwner(
       owner: string,
-      overrides?: Overrides & { from?: string | Promise<string> },
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     replaceOwner(
       owner: string,
       newOwner: string,
-      overrides?: Overrides & { from?: string | Promise<string> },
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     required(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -762,7 +1006,7 @@ export class MultiSigWallet extends BaseContract {
       transactionId: BigNumberish,
       sig: BytesLike,
       signer: string,
-      overrides?: Overrides & { from?: string | Promise<string> },
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     submitTransactionByRelay(
@@ -771,11 +1015,14 @@ export class MultiSigWallet extends BaseContract {
       data: BytesLike,
       sig: BytesLike,
       signer: string,
-      overrides?: Overrides & { from?: string | Promise<string> },
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     transactionCount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    transactions(arg0: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    transactions(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
   };
 }

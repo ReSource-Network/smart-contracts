@@ -22,8 +22,6 @@ contract NetworkRegistry is OwnableUpgradeable {
     address[] public operators;
     address[] public members;
 
-    bool public free;
-
     /*
      *  Modifiers
      */
@@ -58,12 +56,12 @@ contract NetworkRegistry is OwnableUpgradeable {
     }
 
     /*
-     * Public functions
+     * External functions
      */
     /// @dev Contract initialzer sets initial members and initial operators.
     /// @param _members List of initial members.
     /// @param _operators List of initial operators.
-    function initialize(address[] memory _members, address[] memory _operators) public virtual initializer {
+    function initialize(address[] memory _members, address[] memory _operators) external virtual initializer {
         __Ownable_init();
         for (uint256 i = 0; i < _members.length; i++) {
             require(!isMember[_members[i]] && _members[i] != address(0));
@@ -81,7 +79,7 @@ contract NetworkRegistry is OwnableUpgradeable {
 
     /// @dev Allows to add a new member. Transaction has to be sent by an operator wallet.
     /// @param member Address of new member.
-    function addMember(address member) public onlyOperator(msg.sender) memberDoesNotExist(member) notNull(member) {
+    function addMember(address member) external onlyOperator(msg.sender) memberDoesNotExist(member) notNull(member) {
         isMember[member] = true;
         members.push(member);
         emit MemberAddition(member);
@@ -89,7 +87,7 @@ contract NetworkRegistry is OwnableUpgradeable {
 
     /// @dev Allows to remove a member. Transaction has to be sent by operator.
     /// @param member Address of member.
-    function removeMember(address member) public onlyOperator(msg.sender) memberExists(member) {
+    function removeMember(address member) external onlyOperator(msg.sender) memberExists(member) {
         isMember[member] = false;
         for (uint256 i = 0; i < members.length - 1; i++)
             if (members[i] == member) {
@@ -103,7 +101,7 @@ contract NetworkRegistry is OwnableUpgradeable {
     /// @dev Allows to add a new operator. Transaction has to be sent by an operator wallet.
     /// @param operator Address of new operator.
     function addOperator(address operator)
-        public
+        external
         onlyOperator(msg.sender)
         operatorDoesNotExist(operator)
         notNull(operator)
@@ -115,7 +113,7 @@ contract NetworkRegistry is OwnableUpgradeable {
 
     /// @dev Allows to remove a operator. Transaction has to be sent by operator.
     /// @param operator Address of operator.
-    function removeOperator(address operator) public onlyOperator(msg.sender) operatorExists(operator) {
+    function removeOperator(address operator) external onlyOperator(msg.sender) operatorExists(operator) {
         require(operator != owner(), "can't remove owner operator");
         isOperator[operator] = false;
         for (uint256 i = 0; i < operators.length - 1; i++)
@@ -132,13 +130,13 @@ contract NetworkRegistry is OwnableUpgradeable {
      */
     /// @dev Returns list of members.
     /// @return List of member addresses.
-    function getMembers() public view returns (address[] memory) {
+    function getMembers() external view returns (address[] memory) {
         return members;
     }
 
     /// @dev Returns list of operators.
     /// @return List of operator addresses.
-    function getOperators() public view returns (address[] memory) {
+    function getOperators() external view returns (address[] memory) {
         return operators;
     }
 }

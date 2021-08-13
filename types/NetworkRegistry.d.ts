@@ -23,7 +23,6 @@ interface NetworkRegistryInterface extends ethers.utils.Interface {
   functions: {
     "addMember(address)": FunctionFragment;
     "addOperator(address)": FunctionFragment;
-    "free()": FunctionFragment;
     "getMembers()": FunctionFragment;
     "getOperators()": FunctionFragment;
     "initialize(address[],address[])": FunctionFragment;
@@ -40,7 +39,6 @@ interface NetworkRegistryInterface extends ethers.utils.Interface {
 
   encodeFunctionData(functionFragment: "addMember", values: [string]): string;
   encodeFunctionData(functionFragment: "addOperator", values: [string]): string;
-  encodeFunctionData(functionFragment: "free", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "getMembers",
     values?: undefined
@@ -86,7 +84,6 @@ interface NetworkRegistryInterface extends ethers.utils.Interface {
     functionFragment: "addOperator",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "free", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getMembers", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getOperators",
@@ -184,8 +181,6 @@ export class NetworkRegistry extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    free(overrides?: CallOverrides): Promise<[boolean]>;
-
     getMembers(overrides?: CallOverrides): Promise<[string[]]>;
 
     getOperators(overrides?: CallOverrides): Promise<[string[]]>;
@@ -236,8 +231,6 @@ export class NetworkRegistry extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  free(overrides?: CallOverrides): Promise<boolean>;
-
   getMembers(overrides?: CallOverrides): Promise<string[]>;
 
   getOperators(overrides?: CallOverrides): Promise<string[]>;
@@ -281,8 +274,6 @@ export class NetworkRegistry extends BaseContract {
     addMember(member: string, overrides?: CallOverrides): Promise<void>;
 
     addOperator(operator: string, overrides?: CallOverrides): Promise<void>;
-
-    free(overrides?: CallOverrides): Promise<boolean>;
 
     getMembers(overrides?: CallOverrides): Promise<string[]>;
 
@@ -353,8 +344,6 @@ export class NetworkRegistry extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    free(overrides?: CallOverrides): Promise<BigNumber>;
-
     getMembers(overrides?: CallOverrides): Promise<BigNumber>;
 
     getOperators(overrides?: CallOverrides): Promise<BigNumber>;
@@ -408,8 +397,6 @@ export class NetworkRegistry extends BaseContract {
       operator: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
-
-    free(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getMembers(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

@@ -2,7 +2,6 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20BurnableUpgradeable.sol";
 
@@ -14,7 +13,6 @@ library ExtraMath {
 }
 
 contract CIP36 is OwnableUpgradeable, ERC20BurnableUpgradeable {
-    using SafeMath for *;
     using ExtraMath for *;
 
     struct Member {
@@ -43,12 +41,12 @@ contract CIP36 is OwnableUpgradeable, ERC20BurnableUpgradeable {
         return _members[_member].creditLimit;
     }
 
-    function creditLimitLeftOf(address _member) external view returns (uint256) {
+    function creditLimitLeftOf(address _member) public view returns (uint256) {
         Member memory _localMember = _members[_member];
         if (_localMember.creditBalance >= _localMember.creditLimit) {
             return 0;
         }
-        return _localMember.creditLimit.sub(_localMember.creditBalance);
+        return _localMember.creditLimit - _localMember.creditBalance;
     }
 
     function setCreditLimit(address _member, uint256 _limit) external onlyOwner() {
@@ -73,10 +71,10 @@ contract CIP36 is OwnableUpgradeable, ERC20BurnableUpgradeable {
         }
 
         Member memory _memberFrom = _members[_from];
-        uint256 _missingBalance = _amount.sub(_balanceFrom);
-        uint256 _creditLeft = _memberFrom.creditLimit.sub(_memberFrom.creditBalance, "Insufficient credit");
+        uint256 _missingBalance = _amount - _balanceFrom;
+        uint256 _creditLeft = creditLimitLeftOf(_from);
         require(_creditLeft >= _missingBalance, "Insufficient credit");
-        _members[_from].creditBalance = _memberFrom.creditBalance.add(_missingBalance).toUInt128();
+        _members[_from].creditBalance = (_memberFrom.creditBalance + _missingBalance).toUInt128();
         _mint(_from, _missingBalance);
     }
 
@@ -86,7 +84,7 @@ contract CIP36 is OwnableUpgradeable, ERC20BurnableUpgradeable {
         if (_repay == 0) {
             return;
         }
-        _members[_to].creditBalance = _memberTo.creditBalance.sub(_repay).toUInt128();
+        _members[_to].creditBalance = (_memberTo.creditBalance - _repay).toUInt128();
         _burn(_to, _repay);
     }
 }

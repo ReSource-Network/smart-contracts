@@ -7,8 +7,6 @@ import "./Mutuality/UnderwriteManager.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
 contract RUSD is CIP36 {
-    using SafeMath for *;
-
     /*
      *  REGISTERED: _to and _from must be registered wallets.
      *  POSITIVE: _from must have a positive balance if _to is not a registered wallet.
@@ -74,7 +72,7 @@ contract RUSD is CIP36 {
         // if in positive restriction state, recipient is not in the registry and the sender's balance is negative
         if (restrictionState == Restriction.POSITIVE && !registry.isMember(_to)) {
             uint256 _balanceFrom = super.balanceOf(_from);
-            require(_balanceFrom.sub(_amount) >= 0, "Insufficient balance for non network member");
+            require(_balanceFrom - _amount >= 0, "Insufficient balance for non network member");
         }
     }
 

@@ -21,7 +21,7 @@ contract CIP36 is OwnableUpgradeable, ERC20BurnableUpgradeable {
     }
 
     modifier onlyUnderwriter() {
-        require(msg.sender != underwriteManagerAddress, "invalid underwriter address");
+        require(msg.sender == underwriteManagerAddress || msg.sender == owner(), "invalid underwriter address");
         _;
     }
 

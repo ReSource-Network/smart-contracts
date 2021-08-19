@@ -11,7 +11,7 @@ describe("CIP36 Tests", function () {
   let signerA: SignerWithAddress;
   let signerB: SignerWithAddress;
   let signerC: SignerWithAddress;
-
+  let underwriteManagerFaker: SignerWithAddress;
   let CIP36Contract: Contract;
 
   before(async function () {
@@ -19,11 +19,16 @@ describe("CIP36 Tests", function () {
     signerA = accounts[1];
     signerB = accounts[2];
     signerC = accounts[3];
+    underwriteManagerFaker = accounts[4];
   });
 
   it("Successfully deploys CIP36 contract", async function () {
     const CIP36Factory = await ethers.getContractFactory("CIP36");
-    CIP36Contract = (await upgrades.deployProxy(CIP36Factory, ["RUSD", "RUSD"])) as CIP36;
+    CIP36Contract = (await upgrades.deployProxy(CIP36Factory, [
+      "RUSD",
+      "RUSD",
+      underwriteManagerFaker.address,
+    ])) as CIP36;
     expect(CIP36Contract.address).to.properAddress;
   });
 

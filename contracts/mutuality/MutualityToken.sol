@@ -7,4 +7,6 @@ contract MutualityToken is ERC20Upgradeable {
         __ERC20_init("Mutuality", "Mu");
         _mint(msg.sender, initialSupply);
     }
+
+    //TODO: locking mechanism
 }

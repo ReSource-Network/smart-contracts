@@ -92,9 +92,48 @@ describe("UnderwriteManager Tests", function () {
     ).to.emit(underwriteManager, "Underwrite");
 
     expect(
-      ethers.utils.formatEther(await underwriteManager.underwriterCollateral(underwriterA.address, memberA.address)),
+      ethers.utils.formatEther(
+        await (
+          await underwriteManager.creditLines(underwriterA.address, memberA.address)
+        ).collateral,
+      ),
     ).to.equal("10000.0");
 
     expect(ethers.utils.formatEther(await mutualityToken.balanceOf(underwriterA.address))).to.equal("90000.0");
+
+    expect(ethers.utils.formatUnits(await rUSD.creditLimitOf(memberA.address), "mwei")).to.equal("10000.0");
+  });
+
+  it("Successfully use memberA credit line and claim underwriterA reward", async function () {
+    await expect(rUSD.connect(memberA).transfer(memberB.address, ethers.utils.parseUnits("1000.0", "mwei"))).to.emit(
+      rUSD,
+      "Transfer",
+    );
+
+    await expect(underwriteManager.connect(underwriterB).claimReward()).to.be.reverted;
+
+    await expect(underwriteManager.connect(underwriterA).claimReward()).to.emit(underwriteManager, "RewardClaimed");
+
+    expect(
+      ethers.utils.formatEther(await mutualityToken.connect(underwriterA).balanceOf(underwriterA.address)),
+    ).to.equal("90020.0");
+  });
+
+  it("Underwrite an additional 5,000 mu from underwriterA for memberA", async function () {
+    await expect(
+      underwriteManager.connect(underwriterA).underwrite(ethers.utils.parseEther("5000"), memberA.address),
+    ).to.emit(underwriteManager, "Underwrite");
+
+    expect(
+      ethers.utils.formatEther(
+        await (
+          await underwriteManager.creditLines(underwriterA.address, memberA.address)
+        ).collateral,
+      ),
+    ).to.equal("15000.0");
+
+    expect(ethers.utils.formatEther(await mutualityToken.balanceOf(underwriterA.address))).to.equal("85020.0");
+
+    expect(ethers.utils.formatUnits(await rUSD.creditLimitOf(memberA.address), "mwei")).to.equal("15000.0");
   });
 });

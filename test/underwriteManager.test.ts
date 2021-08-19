@@ -88,7 +88,9 @@ describe("UnderwriteManager Tests", function () {
 
   it("Underwrite 10,000 mu from underwriterA for memberA", async function () {
     await expect(
-      underwriteManager.connect(underwriterA).underwrite(ethers.utils.parseEther("10000"), memberA.address),
+      underwriteManager
+        .connect(underwriterA)
+        .underwrite(rUSD.address, ethers.utils.parseEther("10000"), memberA.address),
     ).to.emit(underwriteManager, "Underwrite");
 
     expect(
@@ -98,6 +100,18 @@ describe("UnderwriteManager Tests", function () {
         ).collateral,
       ),
     ).to.equal("10000.0");
+
+    expect(ethers.utils.formatEther(await mutualityToken.balanceOf(underwriterA.address))).to.equal("90000.0");
+
+    expect(ethers.utils.formatUnits(await rUSD.creditLimitOf(memberA.address), "mwei")).to.equal("10000.0");
+  });
+
+  it("Revert underwrite with invalid networkToken address", async function () {
+    await expect(
+      underwriteManager
+        .connect(underwriterA)
+        .underwrite(ethers.Wallet.createRandom().address, ethers.utils.parseEther("10000"), memberA.address),
+    ).to.be.reverted;
 
     expect(ethers.utils.formatEther(await mutualityToken.balanceOf(underwriterA.address))).to.equal("90000.0");
 
@@ -121,7 +135,9 @@ describe("UnderwriteManager Tests", function () {
 
   it("Underwrite an additional 5,000 mu from underwriterA for memberA", async function () {
     await expect(
-      underwriteManager.connect(underwriterA).underwrite(ethers.utils.parseEther("5000"), memberA.address),
+      underwriteManager
+        .connect(underwriterA)
+        .underwrite(rUSD.address, ethers.utils.parseEther("5000"), memberA.address),
     ).to.emit(underwriteManager, "Underwrite");
 
     expect(
@@ -135,5 +151,7 @@ describe("UnderwriteManager Tests", function () {
     expect(ethers.utils.formatEther(await mutualityToken.balanceOf(underwriterA.address))).to.equal("85020.0");
 
     expect(ethers.utils.formatUnits(await rUSD.creditLimitOf(memberA.address), "mwei")).to.equal("15000.0");
+
+    console.log(await underwriteManager.getCreditLines(underwriterA.address));
   });
 });

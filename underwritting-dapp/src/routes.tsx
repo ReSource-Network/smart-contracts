@@ -1,7 +1,6 @@
 import { Box, BoxProps } from "@chakra-ui/react"
 import React, { useCallback, useEffect } from "react"
 import { Redirect, Route, Switch, useLocation } from "react-router-dom"
-import { useAnalytics } from "use-analytics"
 import { BugReport } from "./components/BugReport"
 import { ChatContainer } from "./components/chat/ChatContainer"
 import { Feedback } from "./components/Feedback"

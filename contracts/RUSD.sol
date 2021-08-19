@@ -37,7 +37,7 @@ contract RUSD is CIP36 {
     ) external virtual initializer {
         registry = NetworkRegistry(registryAddress);
         underwriteManager = new UnderwriteManager();
-        underwriteManager.initialize(mutualityAddress, address(this), msg.sender);
+        underwriteManager.initialize(mutualityAddress, msg.sender);
         CIP36.initialize("rUSD", "rUSD", address(underwriteManager));
         restrictionState = Restriction.REGISTERED;
         restrictionRenewal = block.timestamp;

@@ -14,21 +14,22 @@ contract UnderwriteManager is OwnableUpgradeable {
     uint256 public constant MWEI = 1000000000000;
     uint256 public constant REWARD_PERCENT = 2;
     uint256 public constant CREDIT_RENEWAL = 180 days;
-    uint256 public constant MINIMUM_COLLATERAL = 200 ether;
+    uint256 public constant MINIMUM_COLLATERAL = 600 ether;
 
     /*
      *  Storage
      */
     IERC20 public collateralToken;
-    CIP36 public networkToken;
 
     mapping(address => uint256) public rewards;
     mapping(address => mapping(address => CreditLine)) public creditLines;
     mapping(address => address) public underwritees;
+    mapping(address => bool) private networks;
     bool public isActive;
 
     struct CreditLine {
         uint256 collateral;
+        address networkToken;
         uint256 issueDate;
     }
 
@@ -40,13 +41,8 @@ contract UnderwriteManager is OwnableUpgradeable {
     event RewardUpdated(address underwriter, uint256 amount);
     event RewardClaimed(address underwriter, uint256 amount);
 
-    function initialize(
-        address _collateralTokenAddress,
-        address _networkTokenAddress,
-        address owner
-    ) external virtual initializer {
+    function initialize(address _collateralTokenAddress, address owner) external virtual initializer {
         collateralToken = IERC20(_collateralTokenAddress);
-        networkToken = CIP36(_networkTokenAddress);
         isActive = true;
         __Ownable_init();
         transferOwnership(owner);
@@ -61,7 +57,7 @@ contract UnderwriteManager is OwnableUpgradeable {
     }
 
     modifier onlyNetwork(address _address) {
-        require(_address == address(networkToken) || _address == owner(), "Invalid network address");
+        require(networks[_address] == true || _address == owner(), "Invalid network address");
         _;
     }
 
@@ -75,23 +71,32 @@ contract UnderwriteManager is OwnableUpgradeable {
     /*
      * Public functions
      */
-    function underwrite(uint256 collateralAmount, address underwritee) external {
+    function underwrite(
+        address networkToken,
+        uint256 collateralAmount,
+        address underwritee
+    ) external {
         require(
             underwritees[underwritee] == address(0) || underwritees[underwritee] == address(msg.sender),
             "Address already underwritten"
         );
-        uint256 totalCollateral = creditLines[msg.sender][underwritee].collateral + collateralAmount;
+        CreditLine memory creditLine = creditLines[msg.sender][underwritee];
+        if (creditLine.networkToken != address(0)) {
+            require(creditLine.networkToken == networkToken, "Invalid network token");
+        }
+        uint256 totalCollateral = creditLine.collateral + collateralAmount;
         require(totalCollateral >= MINIMUM_COLLATERAL, "Insufficient collateral");
+        networks[networkToken] = true;
         collateralToken.transferFrom(msg.sender, address(this), collateralAmount);
-        uint256 creditLimit = calculateCredit(totalCollateral);
-        creditLines[msg.sender][underwritee] = CreditLine(totalCollateral, block.timestamp);
+        creditLine = CreditLine(totalCollateral, networkToken, block.timestamp);
+        creditLines[msg.sender][underwritee] = creditLine;
         underwritees[underwritee] = msg.sender;
-
-        networkToken.setCreditLimit(underwritee, creditLimit);
-        emit Underwrite(msg.sender, CreditLine(totalCollateral, block.timestamp));
+        uint256 creditLimit = calculateCredit(totalCollateral);
+        CIP36(networkToken).setCreditLimit(underwritee, creditLimit);
+        emit Underwrite(msg.sender, creditLine);
     }
 
-    function withdraw(uint256 amount, address underwritee) external validCreditRenewal(underwritee) {
+    function withdraw(address underwritee) external validCreditRenewal(underwritee) {
         address underwriter;
         if (msg.sender == underwritee) {
             underwriter = underwritees[msg.sender];
@@ -99,13 +104,15 @@ contract UnderwriteManager is OwnableUpgradeable {
             underwriter = underwritees[underwritee];
         }
         require(underwriter != address(0), "Invalid address");
-        uint256 collateral = creditLines[underwriter][underwritee].collateral;
-        require(amount <= collateral, "Invalid withdraw amount");
-        uint256 creditBalance = networkToken.creditBalanceOf(underwritee);
-        uint256 offsetCost = creditBalance * MWEI;
-        uint256 total = amount + rewards[underwriter] + offsetCost;
+        CreditLine memory creditLine = creditLines[underwriter][underwritee];
+        uint256 collateral = creditLine.collateral;
+        uint256 creditBalance = CIP36(creditLine.networkToken).creditBalanceOf(underwritee);
+        uint256 offsetBalance = creditBalance * MWEI;
+        uint256 total = creditLine.collateral + rewards[underwriter] - offsetBalance;
+        // TODO: convert offsetBalance to rUSD and transfer to underwritee
         collateralToken.transfer(underwriter, total);
-        emit Withdrawl(underwriter, amount);
+        creditLines[underwriter][underwritee] = CreditLine(0, address(0), 0);
+        emit Withdrawl(underwriter, total);
     }
 
     function renewCreditLine(address underwritee) external validCreditRenewal(underwritee) {
